@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Matrix Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/matrix-style.css" />
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      .container{
+        min-width: 320px;
+      }
+      .main{
+        margin-top: 20px;
+      }
+      
+      .form-signin {
+        max-width: 300px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+
+      .footer-links {
+          margin-bottom: 20px;
+      }
+      .footer-links a {
+          margin-right: 15px;
+          color: #333c48;
+          text-decoration: none;
+      }
+    </style>
+    <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/admin/"><img src="/static/img/logo2.png" alt="Matrix"></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/"><i class="fa fa-slideshare"></i> Portal</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="main">
+    <div class="container">
+      <%if(http.headers.referer === 'http://slide.h5jun.com/admin/user'){%>
+      <div class="flash-container">
+        <div class="flash-alert">
+          Invalid login or password.
+        </div>
+      </div>
+      <%}%>
+
+      <div class="row">
+        <div class="span7">
+          <h1>Matrix Slideshare Lab</h1>
+          <p>Open source slideshare lab for user to create slideshares by reveal.js.<br> 
+            The easist way to build HTML5 slideshares.
+          </p>
+        </div>
+
+        <div class="span5">
+          <form class="form-signin" action="user/login" method="post">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input id="username" name="username" type="text" class="input-block-level" required placeholder="User name">
+            <input id="passwd" name="passwd" type="password" class="input-block-level" required placeholder="Password">
+            <label class="checkbox" style="display:none">
+              <input id="remember" name="remember" type="checkbox" value="1"> Remember me
+            </label>
+            <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div> <!-- /container -->
+    </div>
+
+    <hr>
+    <div class='container'>
+      <div class='footer-links'>
+        <a href="https://github.com/hakimel/reveal.js">Reveal.js</a>
+        <a href="http://www.bootcss.com/">Bootstrap</a>
+        <a href="http://www.thinkjs.org/">ThinkJS</a>
+        <a href="https://github.com/akira-cn/matrix">Github repo</a>
+      </div>
+    </div>
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

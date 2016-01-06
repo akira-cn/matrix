@@ -1,0 +1,110 @@
+<%include inc/header.html%>
+<script>
+(function(){
+  var siderbar = document.getElementById('sidebar');
+  var lis = siderbar.getElementsByTagName('li');
+  lis[1].className = 'active';
+})();
+</script>
+<style>
+  table td.center {
+    text-align: center;
+  }
+  table td i.fa {
+    margin-right: 8px;
+    font-size: 14px;
+  }
+  div.notice{
+    text-align: center;
+    margin-top: -20px;
+  }
+</style>
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Edit Slideshare</a> </div>
+    <h1>Edit Slideshare</h1><div id="autosave" class="notice">&nbsp;</div>
+  </div>
+  <div class="container-fluid">
+    <hr>
+    <%if(typeof validate_err !== 'undefined'){%>
+      <div class="alert alert-error">
+        <h4 class="alert-heading">Error!</h4>
+        <%=validate_err%>
+      </div>
+    <%}%>
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-content nopadding">
+            <form action="/admin/slide/save" method="post" class="form-horizontal">
+              <input id="sid" name="sid" type="hidden" value="<%=slide_data.id || ''%>"/>
+              <div class="control-group">
+                <label class="control-label">Title :</label>
+                <div class="controls">
+                  <input id="title" name="title" type="text" required value="<%=slide_data.title||''%>"/>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Theme :</label>
+                <div class="controls">
+                  <select id="theme" name="theme">
+                    <option value="beige">beige</option>
+                    <option value="black" selected>black</option>
+                    <option value="blood">blood</option>
+                    <option value="league">league</option>
+                    <option value="moon">moon</option>
+                    <option value="night">night</option>
+                    <option value="serif">serif</option>
+                    <option value="simple">simple</option>
+                    <option value="sky">sky</option>
+                    <option value="solarized">solarized</option>
+                    <option value="white">white</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Content</label>
+                <div class="controls">
+                  <textarea id="slide_content" name="slide_content" required><%-slide_data.content||''%></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <a href="/admin/slide/preview" target="_blank" id="preview" class="btn btn-primary">Preview</a>
+                <button type="submit" class="btn btn-success">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--end-main-container-part-->
+
+<%include inc/footer.html%>
+
+<script>
+$('#theme').val("<%=slide_data.theme || 'black'%>");
+(function(){'use strict'
+  function autosave(){
+    var content = $("#slide_content").val() || $("#title").val() || '# Untitled Slideshare';
+    if(content){
+      localStorage.setItem('slide_content', content);
+      $('#autosave').html('Auto saved at: ' + (new Date()).toLocaleString());
+      return true;
+    }
+  }
+  setInterval(autosave, 6000);
+
+  $('#preview').on('click', function(e){
+    e.target.href = '/admin/slide/preview?theme=' + $('#theme').val();
+    return autosave();
+  });
+})();
+</script>
+
+</body>
+</html>

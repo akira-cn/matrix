@@ -1,0 +1,106 @@
+body {
+    font: normal 16px/1.8 "Segoe UI Light", "Lucida Grande", "Microsoft Jhenghei", "Microsoft Yahei", Arial, Helvetica, Sans-Serif;
+    padding: 2em;
+    background: #f1f1f1;
+    color: #666;
+}
+h1, h2, h3 {
+    font-weight: normal;
+    font-family: "Segoe UI Light", "Segoe UI", "Helvetica Neue Light", "Microsoft Jhenghei", "Microsoft Yahei", Sans-Serif;
+}
+h1 {
+    font-size: 400%;
+    margin: 0 0 .3em;
+}
+a {
+    text-decoration: none;
+}
+#doc {
+    margin: 0 auto;
+    max-width: 1200px;
+    min-height: 800px;
+    overflow: hidden;
+}
+.decks {
+    overflow: hidden;
+    *zoom: 1;
+    margin: 0 -1.5em;
+    padding: 0;
+}
+.decks .deck {
+    float: left;
+    margin: 1.5em;
+}
+.deck {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 14.5em;
+    height: 12em;
+    overflow: hidden;
+    background: #333;
+    padding: 1em;
+    text-align: center;
+}
+.deck .title {
+    font-size: 150%;
+    color: #fff;
+    color: rgba(255,255,255,0.7);
+    max-height: 4em;
+    overflow: hidden;
+    -webkit-transition: color 0.1s ease-in;
+    transition: color 0.1s ease-in;
+}
+.deck .subtitle {
+    color: #fff;
+    color: rgba(255,255,255,0.3);
+    -webkit-transition: color 0.1s ease-in;
+    transition: color 0.1s ease-in;
+}
+.deck a:hover .title {
+    color: #fff;
+}
+.deck a:hover .subtitle {
+    color: #fff;
+}
+.deck:nth-child(5n+1) {
+    background-color: #09c;
+}
+.deck:nth-child(5n+2) {
+    background-color: #93c;
+}
+.deck:nth-child(5n+3) {
+    background-color: #690;
+}
+.deck:nth-child(5n+4) {
+    background-color: #f80;
+}
+.deck:nth-child(5n) {
+    background-color: #c00;
+}
+
+header h1{
+    display: inline-block;
+}
+
+header h1:after{
+    font-size: 16px;
+    font-weight: normal;
+    content: ' Admin';
+}
+
+header a{
+    width: 80px;
+    display: inline-block;
+    margin-left: -70px;
+}
+
+
+/* mobile */
+@media only screen and (max-width: 768px) {
+    body {padding: 1em;}
+    h1 {font-size: 200%;}
+}
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+    .decks .deck {width: 33%}
+}

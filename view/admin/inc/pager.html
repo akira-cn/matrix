@@ -1,0 +1,21 @@
+<%if(pages>1){%>
+<div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers" id="DataTables_Table_0_paginate">
+  <a href="?page=1" class="first ui-corner-tl ui-corner-bl fg-button ui-button ui-state-default" id="DataTables_Table_0_first">First</a><a href="<%=page>1?'?page='+(page-1):'javascript:void(0)'%>" class="previous fg-button ui-button <%=page>1?'ui-state-default':'ui-state-disabled'%>" id="DataTables_Table_0_previous">Previous</a><span>
+  
+  <%if(page <= 2){%>
+    <%for(var i = 1; i <= 5 && i <= pages; i++){%>
+      <a href="?page=<%=i%>" class="fg-button ui-button <%=page!=i?'ui-state-default':'ui-state-disabled'%>"><%=i%></a>
+    <%}%>
+  <%}else if(page >= pages - 2){%>
+    <%for(var i = pages - 4; i <= pages; i++){%>
+      <a href="?page=<%=i%>" class="fg-button ui-button <%=page!=i?'ui-state-default':'ui-state-disabled'%>"><%=i%></a>
+    <%}%>  
+  <%}else{%>
+    <%for(var i = page - 2; i <= page + 2 && i <= pages; i++){%>
+      <a href="?page=<%=i%>" class="fg-button ui-button <%=page!=i?'ui-state-default':'ui-state-disabled'%>"><%=i%></a>
+    <%}%>  
+  <%}%>
+
+  </span><a href="<%=page<pages?'?page='+(page+1):'javascript:void(0)'%>" class="next fg-button ui-button <%=page<pages?'ui-state-default':'ui-state-disabled'%>" id="DataTables_Table_0_next">Next</a><a href="?page=<%=pages%>" class="last ui-corner-tr ui-corner-br fg-button ui-button ui-state-default" id="DataTables_Table_0_last">Last</a>
+</div>
+<%}%>

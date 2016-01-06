@@ -1,0 +1,82 @@
+<%include inc/header.html%>
+<link rel="stylesheet" href="/static/css/uniform.css" />
+<link rel="stylesheet" href="/static/css/select2.css" />
+<script>
+(function(){
+  var siderbar = document.getElementById('sidebar');
+  var lis = siderbar.getElementsByTagName('li');
+  lis[3].className = 'active';
+})();
+</script>
+<style>
+  table td.center {
+    text-align: center;
+  }
+  table td i.fa {
+    margin-right: 8px;
+    font-size: 14px;
+  }
+</style>
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">Settings</a> </div>
+    <h1>Settings</h1>
+  </div>
+  <div class="container-fluid">
+    <hr>
+    <%if(typeof validate_result !== 'undefined'){%>
+      <%if(validate_result === 'error'){%>
+        <div class="alert alert-error">
+          Reset password failed.
+        </div>
+      <%}else{%>
+        <div class="alert alert-success">
+          Password changed successful.
+        </div>      
+      <%}%>
+    <%}%>
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="fa fa-info-circle"></i> </span>
+              <h5>Change password</h5>
+            </div>
+            <div class="widget-content nopadding">
+              <form class="form-horizontal" method="post" action="/admin/user/passwd" name="password_validate" id="password_validate" novalidate="novalidate">
+                <div class="control-group">
+                  <label class="control-label">Password</label>
+                  <div class="controls">
+                    <input type="password" name="pwd" id="pwd"/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Confirm password</label>
+                  <div class="controls">
+                    <input type="password" name="pwd2" id="pwd2"/>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <input type="submit" value="Submit" class="btn btn-success">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--end-main-container-part-->
+
+<%include inc/footer.html%>
+<script src="/static/js/jquery.uniform.js"></script> 
+<script src="/static/js/select2.min.js"></script> 
+<script src="/static/js/jquery.validate.js"></script> 
+<script src="/static/js/matrix.form_validation.js"></script>
+
+</body>
+</html>

@@ -15,8 +15,20 @@ export default class extends Base {
 
   async indexAction(){
     let page = this.get('page') || 1;
+    let num = this.get('num') || 10;
+    let q = this.get('q');
+
+    let condition = {
+      userId: this.userInfo.id, 
+      state:["<>", 2]
+    };
+
+    if(q){
+      condition.title = ['like', '%' + q + '%'];
+    }
+
     let model = this.model('slideshare');
-    let slides = await model.page(page, 10)
+    let slides = await model.page(page, num)
       .field('slideshare.id, title, theme, state, updateTime, createTime, content, name')
       .join({
         table:'user',
@@ -25,7 +37,7 @@ export default class extends Base {
         on: ['userId', 'u.id']
       })
       .order('createTime DESC')
-      .where({userId: this.userInfo.id, state:["<>", 2]})
+      .where(condition)
       .countSelect();
 
     this.assign({
@@ -59,6 +71,21 @@ export default class extends Base {
   }
 
   settingsAction(){
+    return this.display();
+  }
+
+  async imagesAction(){
+    let model = this.model('images');
+    let list = await model.page(1, 10)
+      .order('uploadTime DESC')
+      .countSelect();
+
+    this.assign({
+      list:list.data || [],
+      pages: list.totalPages,
+      page: list.currentPage
+    });
+
     return this.display();
   }
 

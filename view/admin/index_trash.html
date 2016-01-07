@@ -48,7 +48,7 @@
                 <%for(var i = 0; i < slides.length; i++){%>
                   <tr>
                     <td><input type="checkbox" data-id="<%=slides[i].id%>"/></td>
-                    <td><%=slides[i].title%></td>
+                    <td><a href="/admin/slide/preview?id=<%=slides[i].id%>&theme=<%=slides[i].theme%>" title="preview" target="_blank"><%=slides[i].title%></a></td>
                     <td><%=slides[i].theme%></td>
                     <td><%=slides[i].name%></td>
                     <td class="taskStatus"><span class="<%=slides[i].state==0?'in-progress':(slides[i].state==1?'done':'pending')%>"><%=slides[i].state==0?'draft':(slides[i].state==1?'online':'deleted')%></span></td>

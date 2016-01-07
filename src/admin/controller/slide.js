@@ -95,8 +95,6 @@ export default class extends Base {
   async destoryAction(){
     let {id} = this.get();
     let model = this.model("slideshare");
-    let moment = require('moment');
-    let datetime = moment().format('YYYY-MM-DD[T]HH:mm:ss');
 
     if(id){
       let affectedRows = await model
@@ -108,6 +106,13 @@ export default class extends Base {
   }
 
   async previewAction(){
+    let {id} = this.get();
+    if(id){
+      let model = this.model("slideshare");
+      let slide = await model.where({id}).find();
+      console.log(slide);
+      this.assign({slide});
+    }
     return this.display();
   }
 }

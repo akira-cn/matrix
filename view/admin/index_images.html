@@ -1,0 +1,194 @@
+<%include inc/header.html%>
+
+<script>
+(function(){
+  var siderbar = document.getElementById('sidebar');
+  var lis = siderbar.getElementsByTagName('li');
+  lis[3].className = 'active';
+})();
+</script>
+<style>
+  table td.center {
+    text-align: center;
+  }
+  table td i.fa {
+    margin-right: 8px;
+    font-size: 14px;
+  }
+
+  div.btn-wrapper{
+    display: inline-block;
+  }
+
+  div#fileinfo{
+    display: none;
+    margin-top: 6px;
+  }
+
+  .webuploader-container {
+    position: relative;
+  }
+  .webuploader-element-invisible {
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+      clip: rect(1px,1px,1px,1px);
+  }
+
+  .webuploader-pick-disable {
+    opacity: 0.6;
+    pointer-events:none;
+  }
+
+  span.filename {
+    position: absolute;
+    width: 100%;
+    margin-left: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+</style>
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">Settings</a> </div>
+    <h1>Images</h1>
+  </div>
+  <div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+      <div class="span12">
+        <%if(list.length <= 0){%>
+          <div class="alert alert-block">
+            There is no images. You can upload one.
+          </div>
+        <%}else{%>
+          <div class="widget-box">
+            <div class="widget-content nopadding">
+              <table class="table table-bordered table-striped with-check">
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" id="checkall" name="checkall" /></th>
+                    <th>FileName</th>
+                    <th>Size</th>
+                    <th>Upload Time</th>
+                    <th>Operate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%for(var i = 0; i < list.length; i++){%>
+                    <tr>
+                      <td><input type="checkbox" data-id="<%=list[i].id%>"/></td>
+                      <td><a href="<%=list[i].url%>" target="_blank"><%=list[i].filename%></a></td>
+                      <td><%=list[i].size%></td>
+                      <td class="center"><%=new Date(list[i].uploadTime).toLocaleString()%></td>
+                      <td class="center">
+                        <a href="/admin/file/delete?id=<%=list[i].id%>" title="destory"><i class="fa fa-times"></i></a>
+                      </td>
+                    </tr>
+                  <%}%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <%include inc/pager.html%>
+        <%}%>
+        <div class="btn-wrapper" id="uploader">
+          <button id="picker" class="webuploader-container btn btn-primary"><i class="fa fa-folder-open"></i> Choose File</button>
+          <button id="ctlBtn" class="btn btn-success btn-default"><i class="fa fa-upload"></i> Upload</button>
+          <button id="remove" class="btn btn-danger"><i class="fa fa-times"></i> Remove</button>
+          <div id="fileinfo">
+            <span class="filename"></span>
+            <div class="progress progress-mini active progress-striped">
+              <div id="upload-progress" style="width: 0%;" class="bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--end-main-container-part-->
+
+<%include inc/footer.html%>
+
+<script>
+$('#checkall').on('click', function(e){
+  if(e.target.checked){
+    $('table input[type="checkbox"]').attr('checked', true);
+  }else{
+    $('table input[type="checkbox"]').attr('checked', false);
+  }
+});
+$('#remove').on('click', function(e){
+  var ids = [];
+  $('table input[type="checkbox"]').each(function(i, o){
+    if(o.id !== 'checkall' && o.checked){
+      ids.push($(o).attr('data-id'));
+    }
+  });
+  location.href = '/admin/file/delete?id=' + ids.join();
+});
+</script>
+
+<script src="/static/js/webuploader.js"></script>
+<script>
+(function(){
+  var uploader = WebUploader.create({
+      server: '/admin/file/upload',
+      pick: '#picker',
+      resize: true,
+      accept: {
+          title: 'Images',
+          extensions: 'gif,jpg,jpeg,bmp,png',
+          mimeTypes: 'image/*'
+      }
+  });
+
+  uploader.on( 'uploadProgress', function( file, percentage ) {
+      //console.log(percentage);
+      $('#upload-progress').css('width', Math.round(percentage * 100) + '%');
+  });
+
+  document.getElementById('upload-progress')
+    .addEventListener('webkitTransitionEnd', function () {
+      if(uploadStatus === 'success'){
+        $('#upload-progress').css('background-color', '#9bdf14');
+      }else if(uploadStatus === 'error'){
+        $('#upload-progress').css('background-color', '#ee5f5b');
+      }
+    }, false);
+  
+  uploader.on( 'fileQueued', function( file ) {
+    $('#upload-progress').removeClass('bar');
+    $('#upload-progress').css('background-color', '');
+    $('#upload-progress').css('width', '0%');
+    $('#fileinfo').show();
+    $('#fileinfo .filename').html(file.name);
+  });
+
+  $('#ctlBtn').on('click', function(){
+    $('#upload-progress').addClass('bar');
+    uploader.upload();
+  });
+
+  var uploadStatus = '';
+  uploader.on( 'uploadSuccess', function( file, result ) {
+    if(!result.error){
+      //upload success
+      uploadStatus = 'success';
+      setTimeout(function(){
+        location.replace('/admin/index/images');
+      }, 800);
+    }else{
+      //upload failed
+      uploadStatus = 'failed';
+    }
+  });
+})();
+</script>
+</body>
+</html>

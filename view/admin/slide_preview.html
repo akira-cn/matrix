@@ -69,8 +69,11 @@
   </div>
 </body>
 <script src="/static/js/reveal.js"></script>
-<script type="text/slide"></script>
+<script type="text/slide">
+  <%if(typeof slide !== 'undefined'){%><%-slide.content%><%}%>
+</script>
 
+<%if(typeof slide === 'undefined'){%>
 <script type="text/javascript">
   var contentEl = document.querySelector('[type="text/slide"]');
   var data = localStorage.getItem('slide_content');
@@ -78,6 +81,7 @@
     contentEl.innerHTML = data;
   }
 </script>
+<%}%>
 
 <script type="text/javascript">
 function initReveal(){

@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
-# Host: 10.10.190.250 (MySQL 5.5.24-ucloudrel1-log)
+# Host: 127.0.0.1 (MySQL 5.6.24)
 # Database: work_slide
-# Generation Time: 2016-01-06 09:36:52 +0000
+# Generation Time: 2016-01-07 06:23:45 +0000
 # ************************************************************
 
 
@@ -18,6 +18,22 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table images
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `images`;
+
+CREATE TABLE `images` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `url` text NOT NULL,
+  `filename` text NOT NULL,
+  `size` int(11) NOT NULL,
+  `uploadTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 # Dump of table slideshare

@@ -48,13 +48,13 @@
                 <%for(var i = 0; i < slides.length; i++){%>
                   <tr>
                     <td><input type="checkbox" data-id="<%=slides[i].id%>"/></td>
-                    <td><%=slides[i].title%></td>
+                    <td><a href="/admin/slide/preview?id=<%=slides[i].id%>&theme=<%=slides[i].theme%>" title="preview" target="_blank"><%=slides[i].title%></a></td>
                     <td><%=slides[i].theme%></td>
                     <td><%=slides[i].name%></td>
                     <td class="taskStatus"><span class="<%=slides[i].state==0?'in-progress':(slides[i].state==1?'done':'pending')%>"><%=slides[i].state==0?'draft':(slides[i].state==1?'online':'deleted')%></span></td>
                     <td class="center"><%=new Date(slides[i].createTime).toLocaleString()%></td>
                     <td class="center">
-                      <a href="/admin/index/edit?id=<%=slides[i].id%>" title="edit"><i class="fa fa-pencil-square-o edit"></i></a> 
+                      <a href="/admin/index/edit?id=<%=slides[i].id%>" title="edit"><i class="fa fa-pencil-square-o"></i></a> 
                       <a href="/admin/slide/publish?id=<%=slides[i].id%>" title="publish"><i class="fa <%=slides[i].state===1?'fa-unlock':'fa-lock'%>"></i></a>
                       <a href="/admin/slide/delete?id=<%=slides[i].id%>" title="delete"><i class="fa fa-trash"></i></a>
                     </td>

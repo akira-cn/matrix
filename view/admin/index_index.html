@@ -27,7 +27,11 @@
       <div class="span12">
       <%if(slides.length <= 0){%>
         <div class="alert alert-block">
+          <%if(!http.get('q')){%>
           There is no slideshares. You can create one.
+          <%}else{%>
+          No slides found. The query string is `<%=http.get('q')%>`.
+          <%}%>
         </div>
       <%}else{%>
         <div class="widget-box">

@@ -36,7 +36,7 @@
 <!--start-top-serch-->
 <div id="search">
   <form action="/admin/index/index" method="get">
-    <input id="q" name="q" type="text" placeholder="Search here..."/>
+    <input id="q" name="q" type="text" placeholder="Search here..." value="<%=http.get('q')%>"/>
     <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
   </form>
 </div>
@@ -46,8 +46,8 @@
   <ul>
     <li><a href="/admin"><i class="fa fa-tachometer"></i></i> <span>Dashboard</span></a> </li>
     <li><a href="/admin/index/index"><i class="icon icon-th"></i> <span>Slideshares</span></a> </li>
-    <li><a href="/admin/index/trash"><i class="icon icon-trash"></i> <span>Trash</span></a> </li>
     <li><a href="/admin/index/images"><i class="fa fa-picture-o"></i> <span>Images</span></a> </li>
+    <li><a href="/admin/index/trash"><i class="icon icon-trash"></i> <span>Trash</span></a> </li>
     <li><a href="/admin/index/settings"><i class="icon icon-cog"></i> <span>Settings</span></a> </li>
   </ul>
 </div>

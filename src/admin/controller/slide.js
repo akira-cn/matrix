@@ -30,7 +30,7 @@ export default class extends Base {
       userId: this.userInfo.id,
       createTime: datetime
     };
-    console.log(record);
+    //console.log(record);
 
     if(!sid){
       let insertId = await model.add(record);
@@ -110,7 +110,7 @@ export default class extends Base {
     if(id){
       let model = this.model("slideshare");
       let slide = await model.where({id}).find();
-      console.log(slide);
+      //console.log(slide);
       this.assign({slide});
     }
     return this.display();

@@ -1531,7 +1531,7 @@
 			}
 			else {
 				// Prefer zooming in desktop Chrome so that content remains crisp
-				if( !isMobileDevice && /chrome/i.test( navigator.userAgent ) && typeof dom.slides.style.zoom !== 'undefined' ) {
+				if(0 && !isMobileDevice && /chrome/i.test( navigator.userAgent ) && typeof dom.slides.style.zoom !== 'undefined' ) {
 					dom.slides.style.zoom = scale;
 					transformSlides( { layout: '' } );
 				}

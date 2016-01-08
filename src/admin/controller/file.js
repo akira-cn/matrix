@@ -46,12 +46,12 @@ export default class extends Base {
 
     let des = think.RESOURCE_PATH + url;
 
-    let res = await new Promise(function(resolve){
+    let res = await new Promise((resolve) => {
       let readStream = fs.createReadStream(src);
       let writeStream = fs.createWriteStream(des);
 
       readStream.pipe(writeStream);
-      readStream.on('end', function() {
+      readStream.on('end', () => {
         writeStream.end();
 
         let moment = require('moment');
@@ -61,7 +61,8 @@ export default class extends Base {
           url: url,
           size: file.size,
           filename: file.originalFilename,
-          uploadTime: datetime
+          uploadTime: datetime,
+          userId: this.userInfo.id
         });
       });
     });

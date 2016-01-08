@@ -20,6 +20,7 @@ pids
 *.seed
 app/common/runtime/
 src/common/config/env/
+www/static/upload
 style.min.css
 _spritesheet*.png
 

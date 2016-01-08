@@ -10,9 +10,9 @@ export default class extends Base {
       return Promise.resolve();
     }
     this.redirect('/admin/user');   
-    return Promise.reject(); 
+    return Promise.reject('Required login --> redirecting.'); 
   }
-
+  
   async indexAction(){
     let page = this.get('page') || 1;
     let num = this.get('num') || 10;
@@ -77,6 +77,7 @@ export default class extends Base {
   async imagesAction(){
     let model = this.model('images');
     let list = await model.page(1, 10)
+      .where({userId: this.userInfo.id})
       .order('uploadTime DESC')
       .countSelect();
 

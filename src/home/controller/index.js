@@ -14,11 +14,4 @@ export default class extends Base {
     this.assign('slides', slides);
     return this.display();
   }
-  async uuaploginAction(){
-    let http = this.http;
-    let uuap = require('uuap');
-    let userInfo = await uuap.getUserInfo(http.req, http.res);
-
-    return this.json(userInfo);
-  }
 }

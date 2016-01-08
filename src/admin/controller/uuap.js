@@ -42,6 +42,6 @@ export default class extends Base {
     let uuap = require('uuap');
     await this.session('userInfo', '');
     uuap.logout(http.req, http.res)
-    return this.redirect('/admin/uuap/login');
+    return this.redirect('/');
   }
 }

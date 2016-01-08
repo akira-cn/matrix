@@ -119,8 +119,7 @@ function initReveal(){
             div.style.height = '600px';
             el.appendChild(div);
           }
-
-          Reveal.addEventListener('slidechanged', function( event ) {
+          function showcharts( event ) {
             var slide = event.currentSlide;
             var isChart = slide.hasAttribute('data-echart') && !slide.getAttribute('data-echart-loaded');
 
@@ -208,13 +207,16 @@ function initReveal(){
                   });
               }
             }
-          } );      
+          } 
+          
+          Reveal.addEventListener('ready', showcharts); 
+          Reveal.addEventListener('slidechanged', showcharts);     
       } },  
     ]
   });
 
 
-  Reveal.addEventListener( 'slidechanged', function( event ) {
+  function onstage( event ) {
     // event.currentSlide, event.indexh, event.indexv
     var stage = $(event.currentSlide).attr('data-stage');
 
@@ -227,7 +229,10 @@ function initReveal(){
     }else{
       $('body').css('background-color', '');
     }
-  } );
+  }
+
+  Reveal.addEventListener( 'ready', onstage);
+  Reveal.addEventListener( 'slidechanged', onstage);
 }
 
 (function(){

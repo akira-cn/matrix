@@ -25,6 +25,7 @@
   </div>
   <div class="container-fluid">
     <hr>
+    <%if(!user.uuap){%>
     <%if(typeof validate_result !== 'undefined'){%>
       <%if(validate_result === 'error'){%>
         <div class="alert alert-error">
@@ -64,6 +65,7 @@
         </div>
       </div>
     </div>
+    <%}%>
   </div>
 </div>
 

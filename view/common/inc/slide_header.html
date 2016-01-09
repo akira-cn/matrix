@@ -44,9 +44,6 @@
         -webkit-transition: background 0.8s ease-in!important;
         transition: background 0.8s ease-in!important;
       }
-      slide-template{
-        display: none;
-      }
     </style>
 </head>
 <body>
@@ -54,8 +51,8 @@
     <div class="slides" id="main">
     </div>
   </div>
-  <script src="/static/module/reveal/js/reveal.js"></script>
-  <slide-template>
-    <%-slide.content || '# No slideshare.'%>
-  </slide-template>
 </body>
+<script src="/static/module/reveal/js/reveal.js"></script>
+<script type="text/slide">
+  <%-slide.content || '# No slideshare.'%>
+</script>

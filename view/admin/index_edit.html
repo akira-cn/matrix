@@ -14,35 +14,30 @@
     margin-right: 8px;
     font-size: 14px;
   }
-  div.notice{
-    text-align: center;
-    margin-top: -20px;
+  #save_state{
+    margin: 0;
+    display: none;
   }
 </style>
 
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Edit Slideshare</a> </div>
-    <h1>Edit Slideshare</h1><div id="autosave" class="notice">&nbsp;</div>
+    <h1>Edit Slideshare</h1>
   </div>
   <div class="container-fluid">
     <hr>
-    <%if(typeof validate_err !== 'undefined'){%>
-      <div class="alert alert-error">
-        <h4 class="alert-heading">Error!</h4>
-        <%=validate_err%>
-      </div>
-    <%}%>
+    <div id="save_state" class="alert alert-info"></div>
     <div class="row-fluid">
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content nopadding">
-            <form action="/admin/slide/save" method="post" class="form-horizontal">
+            <form id='save_form' action="/admin/slide/save" method="post" class="form-horizontal">
               <input id="sid" name="sid" type="hidden" value="<%=slide_data.id || ''%>"/>
               <div class="control-group">
                 <label class="control-label">Title :</label>
                 <div class="controls">
-                  <input id="title" name="title" type="text" required value="<%=slide_data.title||''%>"/>
+                  <input id="title" name="title" required type="text" value="<%=slide_data.title||''%>"/>
                 </div>
               </div>
               <div class="control-group">
@@ -87,22 +82,49 @@
 <%include inc/footer.html%>
 
 <script>
-$('#theme').val("<%=slide_data.theme || 'black'%>");
 (function(){'use strict'
-  function autosave(){
+  $('#theme').val("<%=slide_data.theme || 'black'%>");
+
+  function preview(){
     var content = $("#slide_content").val() || $("#title").val() || '# Untitled Slideshare';
     if(content){
       localStorage.setItem('slide_content', content);
-      $('#autosave').html('Auto saved at: ' + (new Date()).toLocaleString());
       return true;
     }
   }
-  setInterval(autosave, 6000);
 
   $('#preview').on('click', function(e){
     e.target.href = '/admin/slide/preview?theme=' + $('#theme').val();
-    return autosave();
+    return preview();
   });
+
+  $('#save_form').submit(function(){
+    $.ajax({
+      type:'POST',
+      url:'/admin/slide/save',
+      data:$(this).serialize(),
+      success: function(res){
+        if(!res.err){
+          $('#save_state').removeClass('alert-error').addClass('alert-info');
+          $('#save_state').html('Saved at ' + (new Date()).toLocaleString());
+          $('#save_state').show();
+        }else{
+          $('#save_state').removeClass('alert-info').addClass('alert-error');
+          $('#save_state').html(res.err);
+          $('#save_state').show();
+        }
+      },
+      error: function(){
+        $('#save_state').removeClass('alert-info').addClass('alert-error');
+        $('#save_state').html(res.err);
+        $('#save_state').show();
+      }
+    });
+    return false;
+  });
+
+  //autosave
+  setInterval(function(){$('#save_form').submit()}, 12000);
 })();
 </script>
 

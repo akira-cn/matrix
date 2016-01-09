@@ -48,6 +48,10 @@
     text-overflow: ellipsis;
     max-width: 150px;
   }
+  #upload_state{
+    margin: 0;
+    display: none;
+  }
 </style>
 
 <div id="content">
@@ -57,6 +61,7 @@
   </div>
   <div class="container-fluid">
     <hr>
+    <div id="upload_state" class="alert alert-error"></div>
     <div class="row-fluid">
       <div class="span12">
         <%if(list.length <= 0){%>
@@ -185,8 +190,19 @@ $('#remove').on('click', function(e){
       }, 800);
     }else{
       //upload failed
-      uploadStatus = 'failed';
+      uploadStatus = 'error';
+      setTimeout(function(){
+        $('#upload_state').html('上传失败');
+        $('#upload_state').show();
+      }, 600);
     }
+  });
+  uploader.on( 'uploadError', function( file ) {
+    uploadStatus = 'error';
+    setTimeout(function(){
+      $('#upload_state').html('上传失败');
+      $('#upload_state').show();
+    }, 600);
   });
 })();
 </script>

@@ -32,28 +32,23 @@ function initReveal(){
               }
           });
 
-          var charts = document.querySelectorAll('[data-echart]');
-
-          for(var i = 0; i < charts.length; i++){
-            var el = charts[i];
-            var div = document.createElement('div');
-            div.className = 'echart';
-            div.style.height = '600px';
-            el.appendChild(div);
-          }
           function showcharts( event ) {
             var slide = event.currentSlide;
-            var isChart = slide.hasAttribute('data-echart') && !slide.getAttribute('data-echart-loaded');
 
-            if(isChart){
-              slide.setAttribute('data-echart-loaded', 1);
+            var initChart = slide.hasAttribute('data-echart') && !slide.querySelector('.echart');
 
+            if(initChart){
               var theme = "<%=http.get('ct')%>" || slide.getAttribute('data-echart') || 'default';
 
               var optionsEl = slide.querySelector('script[type="text/template"]'), options;
               if(optionsEl) options = (new Function('option', optionsEl.innerHTML.trim() + ';return option;'))();
 
               if(options && theme){
+
+                var div = document.createElement('div');
+                div.className = 'echart';
+                div.style.height = $(optionsEl).attr('data-height') || '600px';
+                $(optionsEl).after(div);
 
                 var series = options.series;
                 var toolbox = options.toolbox;
@@ -157,7 +152,7 @@ function initReveal(){
 }
 
 (function(){
-  var contentEl = document.querySelector('[type="text/slide"]');
+  var contentEl = document.querySelector('slide-template');
   if(!contentEl){
     alert('没有要分享的内容！');
     return;

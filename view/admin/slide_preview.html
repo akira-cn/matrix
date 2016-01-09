@@ -2,7 +2,7 @@
 
 <%if(!http.get('id')){%>
 <script type="text/javascript">
-  var contentEl = document.querySelector('[type="text/slide"]');
+  var contentEl = document.querySelector('slide-template');
   var data = localStorage.getItem('slide_content');
   if(data){
     contentEl.innerHTML = data;

@@ -16,9 +16,9 @@ export default class extends think.logic.base {
     let flag = this.validate(rules);
 
     if(!flag){
-      //return this.fail("validate error", this.errors());
-      this.assign('validate_err', this.errors().title || this.errors().slide_content);
-      return this.action('admin/index', 'edit');
+      //this.assign('validate_err', this.errors().title || this.errors().slide_content);
+      //return this.action('admin/index', 'edit');
+      return this.json({err: this.errors().title || this.errors().slide_content})
     }
   }
 }

@@ -1,0 +1,220 @@
+<script type="text/javascript">
+function initReveal(){
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+
+    transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+    // Optional reveal.js plugins
+    dependencies: [
+      { src: '/static/js/jquery.min.js', condition: function(){ return !isMobile.any; } },
+      //{ src: '/static/js/zepto.min.js', condition: function(){ return isMobile.any; } },
+      { src: '/static/js/jquery.color.js' },
+      { src: '/static/module/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '/static/module/reveal/plugin/highlight/highlight.js', condition: function() { return 1; }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: '/static/module/reveal/plugin/zoom-js/zoom.js', async: true },
+      { src: '/static/module/reveal/plugin/notes/notes.js', async: true },
+      { src: '/static/module/reveal/plugin/dragonbones/dragonBones.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
+      { src: '/static/module/reveal/plugin/dragonbones/createjs.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
+      { src: '/static/module/reveal/plugin/dragonbones/dragonBonesCreateJS.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
+      { src: '/static/module/reveal/plugin/dragonbones/dragonboneDatas.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
+      { src: '/static/module/reveal/plugin/chat/socket-io.js', condition: function(){ return !!document.querySelector('[data-chat]'); } },
+      { src: '/static/module/reveal/plugin/chat/qrcode.js', condition: function(){ return !!document.querySelector('[data-chat]'); } },
+      { src: '/static/module/reveal/plugin/chat/chat.js', condition: function(){ return !!document.querySelector('[data-chat]'); }, async: true },
+      { src: '/static/module/reveal/plugin/echarts/echarts.js', condition: function() { return !!document.querySelector('[data-echart]'); }, callback: function(){'use strict'
+          // echarts 路径配置
+          require.config({
+              paths: {
+                  echarts: '/static/module/reveal/plugin/echarts'
+              }
+          });
+
+          var charts = document.querySelectorAll('[data-echart]');
+
+          for(var i = 0; i < charts.length; i++){
+            var el = charts[i];
+            var div = document.createElement('div');
+            div.className = 'echart';
+            div.style.height = '600px';
+            el.appendChild(div);
+          }
+          function showcharts( event ) {
+            var slide = event.currentSlide;
+            var isChart = slide.hasAttribute('data-echart') && !slide.getAttribute('data-echart-loaded');
+
+            if(isChart){
+              slide.setAttribute('data-echart-loaded', 1);
+
+              var theme = "<%=http.get('ct')%>" || slide.getAttribute('data-echart') || 'default';
+
+              var optionsEl = slide.querySelector('script[type="text/template"]'), options;
+              if(optionsEl) options = (new Function('option', optionsEl.innerHTML.trim() + ';return option;'))();
+
+              if(options && theme){
+
+                var series = options.series;
+                var toolbox = options.toolbox;
+
+                var deps = ['echarts', 'echarts/theme/' + theme];
+                for(var i = 0; i < series.length; i++){
+                  var type = 'echarts/chart/' + series[i].type;
+                  if(deps.indexOf(type) < 0){
+                    deps.push(type);
+                  }
+                }
+
+                if(toolbox && toolbox.show){
+                  if(toolbox.feature && toolbox.feature.magicType
+                    && toolbox.feature.magicType.show){
+                    var magicTypes = toolbox.feature.magicType.type;
+                    if(magicTypes && magicTypes.length){
+                      for(var i = 0; i < magicTypes.length; i++){
+                        var type = 'echarts/chart/' + magicTypes[i];
+                        if(deps.indexOf(type) < 0){
+                          deps.push(type);
+                        }                        
+                      }
+                    }
+                  }
+                }
+                
+                require(deps, function(ec, theme){
+                    function resetColor(obj, path, color){
+                      var ns = path.split('.');
+                      var root = obj;
+
+                      for(var i = 0; i < ns.length - 1; i++){
+                        var key = ns[i];
+
+                        root[key] = root[key] || {};
+                        root = root[key];
+                      }
+
+                      root[ns[i]] = color;
+                    }
+                    
+                    var div = slide.querySelector('.echart');
+
+                    if(theme){
+                      var color = $(slide).attr('data-stage') 
+                          || $('body').attr('data-origin-bg')
+                          || $('body').css('background-color');
+
+                      color = $.Color(color);
+                      color = $.Color(255 - color.red(), 255 - color.green(), 255 - color.blue());
+                      color = color.toRgbaString();
+
+                      //adjust text & colors for theme
+                      theme.textStyle = theme.textStyle || {};
+                      theme.textStyle.fontSize = 14;
+
+                      resetColor(theme, 'title.textStyle.color', color);
+                      resetColor(theme, 'legend.textStyle.color', color);
+                      resetColor(theme, 'polar.name.textStyle.color', color);
+                      resetColor(theme, 'valueAxis.axisLabel.textStyle.color', color);
+                      resetColor(theme, 'categoryAxis.axisLabel.textStyle.color', color);
+                      resetColor(theme, 'gauge.title.textStyle.color', color);
+                    }
+
+                    var myChart = ec.init(div, theme); 
+
+                    // 为echarts对象加载数据 
+                    setTimeout(function(){
+                      myChart.setOption(options); 
+                    }, 100);
+
+                  });
+              }
+            }
+          } 
+          
+          Reveal.addEventListener('ready', showcharts); 
+          Reveal.addEventListener('slidechanged', showcharts);     
+      } }, 
+    ]
+  });
+
+  function onstage( event ) {
+    // event.currentSlide, event.indexh, event.indexv
+    var stage = $(event.currentSlide).attr('data-stage');
+
+    if(stage){
+      if(!$('body').attr('data-origin-bg')){
+        var originColor = $('body').css('background-color');
+        $('body').attr('data-origin-bg', originColor);
+      }
+      $('body').css('background-color', stage);
+    }else{
+      $('body').css('background-color', '');
+    }
+  }
+
+  Reveal.addEventListener( 'ready', onstage);
+  Reveal.addEventListener( 'slidechanged', onstage);
+}
+
+(function(){
+  var contentEl = document.querySelector('[type="text/slide"]');
+  if(!contentEl){
+    alert('没有要分享的内容！');
+    return;
+  }
+  var content = contentEl.innerHTML;
+  var slides = content.split(/^---/img);
+
+  for(var i = 0; i < slides.length; i++){
+    var slide = slides[i];
+    var matches = /^\@(.+)/img.exec(slide);
+    var dataTag = [];
+
+    if(matches && matches[1]){
+      var tags = matches[1].split(/\s*,\s*/g);
+
+      if(tags.indexOf('html') < 0 && tags.indexOf('template') < 0){
+        dataTag.push('data-markdown', 'data-template');
+      }
+
+      for(var j = 0; j < tags.length; j++){
+        var tag = tags[j];
+        if(tag === 'html') continue;
+        else if(tag.indexOf(':') >= 0){
+          tag = tag.replace(':', '="') + '"';
+          dataTag.push('data-' + tag);
+        }else{
+          dataTag.push('data-' + tag);
+        }
+      }
+
+      slide = slide.replace(matches[0], '');
+    }else{
+      dataTag.push('data-markdown', 'data-template');
+    }
+
+
+
+    var parsed = '<section ' + dataTag.join(' ') + '>';
+
+    if(dataTag.indexOf('data-template') >= 0){
+      parsed += '<script type="text/template">' + slide + '<'+'\/script>';
+    }else{
+      parsed += slide;
+    }
+
+    parsed += '</section>';
+
+    slides[i] = parsed;
+  }
+
+  var container = document.getElementById('main');
+  container.innerHTML = slides.join('');
+
+  initReveal();
+})();
+
+</script>
+<script src="/static/module/reveal/plugin/markdown/marked.js"></script>
+<script src="/static/module/reveal/plugin/markdown/markdown.js"></script>
+</html>

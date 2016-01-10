@@ -2,8 +2,7 @@
 
 <script>
 (function(){
-  var siderbar = document.getElementById('sidebar');
-  var lis = siderbar.getElementsByTagName('li');
+  var lis = document.querySelectorAll('#sidebar>ul>li');
   lis[2].className = 'active';
 })();
 </script>
@@ -16,13 +15,8 @@
     font-size: 14px;
   }
 
-  div.btn-wrapper{
-    display: inline-block;
-  }
-
   div#fileinfo{
     display: none;
-    margin-top: 6px;
   }
 
   .webuploader-container {

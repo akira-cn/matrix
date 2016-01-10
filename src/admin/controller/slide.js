@@ -20,7 +20,7 @@ export default class extends Base {
     //console.log(title, theme, slide_content); 
     let model = this.model("slideshare");
     let moment = require('moment');
-    let datetime = moment().format('YYYY-MM-DD[T]HH:mm:ss');
+    let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
     let record = {
       title: title,
@@ -49,7 +49,7 @@ export default class extends Base {
     let {id} = this.get();
     let model = this.model("slideshare");
     let moment = require('moment');
-    let datetime = moment().format('YYYY-MM-DD[T]HH:mm:ss');
+    let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
     if(id){
       let affectedRows = await model
@@ -64,7 +64,7 @@ export default class extends Base {
     let {id} = this.get();
     let model = this.model("slideshare");
     let moment = require('moment');
-    let datetime = moment().format('YYYY-MM-DD[T]HH:mm:ss');
+    let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
     if(id){
       let affectedRows = await model
@@ -79,7 +79,7 @@ export default class extends Base {
     let {id} = this.get();
     let model = this.model("slideshare");
     let moment = require('moment');
-    let datetime = moment().format('YYYY-MM-DD[T]HH:mm:ss');
+    let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
     if(id){
       let data = await model.where({id}).find();

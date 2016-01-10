@@ -17,6 +17,7 @@ export default class extends Base {
   async deleteAction(){
     let {id} = this.get();
     let model = this.model("images");
+    let fs = require('fs');
 
     if(id){
       let images = await model.where({id: ['in', id]}).select();
@@ -24,7 +25,9 @@ export default class extends Base {
       for(var i = 0; i < images.length; i++){
         let path = think.RESOURCE_PATH + images[i].url;
         //console.log(path);
-        require('fs').unlink(path);
+        if(!/^http(s):\/\//.test(path) && fs.existsSync(path)){
+          fs.unlink(path);
+        }
       }
       let affectedRows = await model
         .where({id: ['in', id]})
@@ -33,38 +36,146 @@ export default class extends Base {
 
     return this.redirect('/admin/index/images'); 
   }
+  //以base64形式上传的
+  async postAction(){
+    let {data, file} = this.post();
+    //console.log(data);
+    
+    let url = '/static/upload/' 
+      + md5(Math.random()+Date.now()+'').slice(0,16)
+      + '.png';
+
+    let src = think.RESOURCE_PATH + url;
+    let fs = require('fs');
+
+    let res = await new Promise((resolve, reject)=>{
+      let dataBuffer = new Buffer(data, 'base64');
+
+      fs.writeFile(src, dataBuffer, err => {
+        if(err){
+          reject(err);
+        }else{
+          let qiniuConf = think.config('qiniu');
+          if(!qiniuConf){
+            let moment = require('moment');
+            let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+            resolve({
+              url: url,
+              size: dataBuffer.length,
+              filename: file,
+              uploadTime: datetime,
+              userId: this.userInfo.id
+            });
+          }else{
+            let qiniu = require('node-qiniu');
+            qiniu.config({
+              access_key: qiniuConf.access_key,
+              secret_key: qiniuConf.secret_key
+            });
+
+            let bucket = qiniu.bucket('h5jun');
+
+            let des = 'matrix' + url;
+
+            bucket.putFile(des, src, (err, reply) => {
+              if(!err){
+                let url = qiniuConf.domain +'/'+ des;
+                
+                let moment = require('moment');
+                let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+                resolve({
+                  url: url,
+                  size: dataBuffer.length,
+                  filename: file,
+                  uploadTime: datetime,
+                  userId: this.userInfo.id              
+                });
+              }else{
+                reject(err);
+              }            
+            });
+          }
+        }
+      });
+    }).catch(err => {
+      this.json({error: err.message || 'upload error'});
+    }); 
+ 
+    let model = this.model('images');
+    let insertId = await model.add(res);
+
+    if(insertId){
+      return this.json({error: '', url: res.url});
+    }else{
+      return this.json({error: 'upload error'});
+    }
+  }
 
   async uploadAction(){
     let file = this.file('file');
     let fs = require( 'fs' );
     let src = file.path;
 
-    let url = "/static/upload/" 
+    let url = '/static/upload/' 
       + md5(Math.random()+Date.now()+'').slice(0,16)
       + require('path').parse(src).ext; 
     //+ file.originalFilename;
 
-    let des = think.RESOURCE_PATH + url;
-
     let res = await new Promise((resolve) => {
-      let readStream = fs.createReadStream(src);
-      let writeStream = fs.createWriteStream(des);
-
-      readStream.pipe(writeStream);
-      readStream.on('end', () => {
-        writeStream.end();
-
-        let moment = require('moment');
-        let datetime = moment().format('YYYY-MM-DD[T]HH:mm:ss');
-        
-        resolve({
-          url: url,
-          size: file.size,
-          filename: file.originalFilename,
-          uploadTime: datetime,
-          userId: this.userInfo.id
+      let qiniuConf = think.config('qiniu');
+      if(qiniuConf){
+        let qiniu = require('node-qiniu');
+        qiniu.config({
+          access_key: qiniuConf.access_key,
+          secret_key: qiniuConf.secret_key
         });
-      });
+
+        let bucket = qiniu.bucket('h5jun');
+
+        let des = 'matrix' + url;
+
+        bucket.putFile(des, src, (err, reply) => {
+          if(!err){
+            let url = qiniuConf.domain +'/'+ des;
+            
+            let moment = require('moment');
+            let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+            resolve({
+              url: url,
+              size: file.size,
+              filename: file.originalFilename,
+              uploadTime: datetime,
+              userId: this.userInfo.id              
+            });
+          }else{
+            reject(err);
+          }
+        });        
+      }else{
+        let des = think.RESOURCE_PATH + url;
+        
+        let readStream = fs.createReadStream(src);
+        let writeStream = fs.createWriteStream(des);
+
+        readStream.pipe(writeStream);
+        readStream.on('end', () => {
+          writeStream.end();
+
+          let moment = require('moment');
+          let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+          
+          resolve({
+            url: url,
+            size: file.size,
+            filename: file.originalFilename,
+            uploadTime: datetime,
+            userId: this.userInfo.id
+          });
+        });
+      }
     });
 
     //console.log(res);

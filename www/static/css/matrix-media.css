@@ -21,9 +21,9 @@ body {
 }
 #sidebar > ul > li.active a{ color:#fff; text-decoration:none;}
 
-#sidebar > ul > li > a > .label {
+/*#sidebar > ul > li > a > .label {
 	background-color:#F66;
-}
+}*/
 #sidebar > ul > li > a:hover {
 	background-color: #27a9e3; color:#fff;
 }
@@ -35,7 +35,6 @@ body {
 	color: #fff;
 	background-color: #28b779;
 }
-
 
 #search input[type=text] {
 	background-color: #47515b; color: #fff; 

@@ -1609,3 +1609,11 @@ div.dataTables_wrapper .ui-widget-header {
     border: 1px solid transparent;
     border-radius: 0;
 }
+
+.btn-wrapper {
+  display: inline-block;
+}
+
+.progress {
+	margin-top: 6px;
+}

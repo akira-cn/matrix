@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/static/css/matrix-style.css" />
 <link rel="stylesheet" href="/static/css/matrix-media.css" />
 <link href="/static/css/font-awesome.min.css" rel="stylesheet" />
+<script src="/static/js/jquery.min.js"></script> 
 </head>
 <body>
 
@@ -47,8 +48,25 @@
     <li><a href="/admin"><i class="fa fa-tachometer"></i></i> <span>Dashboard</span></a> </li>
     <li><a href="/admin/index/index"><i class="icon icon-th"></i> <span>Slideshares</span></a> </li>
     <li><a href="/admin/index/images"><i class="fa fa-picture-o"></i> <span>Images</span></a> </li>
+    <li id="addons" class="submenu"> <a href="#"><i class="fa fa-suitcase"></i> <span>Addons</span> <span class="label label-success">2</span></a>
+      <ul>
+        <li><a href="https://svg-edit.github.io/svgedit/releases/svg-edit-2.8.1/svg-editor.html" target="_blank">SVG Editor</a></li>
+        <li><a href="https://photo-editor.canva.com/" target="_blank">Photo Editor</a></li>
+      </ul>
+    </li>
     <li><a href="/admin/index/trash"><i class="icon icon-trash"></i> <span>Trash</span></a> </li>
     <li><a href="/admin/index/settings"><i class="icon icon-cog"></i> <span>Settings</span></a> </li>
   </ul>
 </div>
+<script>
+$('#addons').click(function(){
+  if($(this).hasClass('open')){
+    $('#addons > ul').slideUp();
+    $(this).removeClass('open');
+  }else{
+    $('#addons > ul').slideDown();
+    $(this).addClass('open');
+  }
+});
+</script>
 <!--sidebar-menu-->

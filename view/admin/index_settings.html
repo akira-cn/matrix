@@ -3,9 +3,8 @@
 <link rel="stylesheet" href="/static/css/select2.css" />
 <script>
 (function(){
-  var siderbar = document.getElementById('sidebar');
-  var lis = siderbar.getElementsByTagName('li');
-  lis[4].className = 'active';
+  var lis = document.querySelectorAll('#sidebar>ul>li');
+  lis[5].className = 'active';
 })();
 </script>
 <style>

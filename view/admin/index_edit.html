@@ -22,6 +22,13 @@
     visibility: hidden;
     height: 290px;
   }
+  #file_uploader, #file{
+    display: none;
+  }
+  #file_uploader_progress {
+    height: 10px;
+    display: none;
+  }
 </style>
 
 <div id="content">
@@ -64,10 +71,17 @@
               </div>
               <div class="control-group">
                 <textarea id="slide_content" name="slide_content" required><%-slide_data.content||''%></textarea>
+                <input id="file" accept="image/*;capture=camera" capture="camera" name="file" type="file"></input>
               </div>
               <div class="form-actions">
-                <a href="/admin/slide/preview" target="_blank" id="preview" class="btn btn-primary">Preview</a>
-                <button type="submit" class="btn btn-success">Save</button>
+                <div class="btn-wrapper">
+                  <button id="file_uploader" type="button" class="btn btn-warning">Insert Image</button>
+                  <a href="/admin/slide/preview" target="_blank" id="preview" class="btn btn-primary">Preview</a>
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <div id="file_uploader_progress" class="progress progress-mini active progress-striped">
+                    <div style="width: 100%;" class="bar"></div>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
@@ -86,12 +100,88 @@
 <script src="/static/module/codemirror/mode/xml/xml.js"></script>
 <script src="/static/module/codemirror/mode/markdown/markdown.js"></script>
 <script>
-CodeMirror.fromTextArea(document.getElementById("slide_content"), {
+var editor = CodeMirror.fromTextArea(document.getElementById("slide_content"), {
   mode: 'markdown',
   lineNumbers: true,
   theme: "default",
   extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
 });
+if(window.URL || window.webkitURL || window.FileReader){
+  $('#file_uploader').show();
+  $('#file_uploader').click(function(){
+    $('#file').click();
+    //editor.replaceSelection('aaa');
+  });
+  $('#file').on('change', function(evt){
+      var fileInput = evt.target;
+      var file = fileInput.files[0];
+      var URL = window.URL || window.webkitURL;
+
+      if(0 && window.FileReader){
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e){
+          //console.log(this.result);
+          postImageData(this.result);
+        }
+      }else if(URL){
+        var blob = URL.createObjectURL(file);
+        getImageData(blob, function(data){
+          //console.log(data);
+          postImageData(data);
+        });
+      }
+  });
+
+  function postImageData(data){
+    data = data.replace(/^data:image\/\w+;base64,/, "");
+    var file = $('#file').val().split(/\/|\\/);
+
+    $('#file_uploader_progress>div').css('background-color', '');
+    $('#file_uploader_progress').show();
+    $.ajax({
+      type: 'POST',
+      url: '/admin/file/post',
+      data: {data:data, file:file[file.length-1]},
+      dataType: 'json', 
+      success: function(res){
+        if(!res.error && res.url){
+          $('#file_uploader_progress>div').css('background-color', '#9bdf14');
+          setTimeout(function(){
+            $('#file_uploader_progress').hide();
+          }, 100);
+          editor.replaceSelection('<img src="'+res.url+'"/>');
+        }else{
+          $('#file_uploader_progress>div').css('background-color', '#ee5f5b');
+          $('#save_state').addClass('alert-error').removeClass('alert-info');
+          $('#save_state').html('upload image error.');
+          $('#save_state').show();          
+        }
+      },
+      error: function(res){
+        $('#file_uploader_progress>div').css('background-color', '#ee5f5b');
+        $('#save_state').addClass('alert-error').removeClass('alert-info');
+        $('#save_state').html('upload image error.');
+        $('#save_state').show();  
+      }
+    });
+  }
+
+  function getImageData(uri, callback){
+    var img = new Image();
+    img.src = uri;
+    img.onload = function(evt){
+      //console.log(img.width, img.height);
+      var w = img.width, h = img.height;
+      var _canvas = document.createElement('canvas');
+      _canvas.width = w;
+      _canvas.height = h;
+      _canvas.getContext('2d').drawImage(img, 0, 0, w, h, 0, 0, w, h);
+      var d = _canvas.toDataURL("image/png");
+      callback(d);
+    }
+  }
+}
 </script>
 <%include inc/footer.html%>
 <script>
@@ -137,7 +227,7 @@ CodeMirror.fromTextArea(document.getElementById("slide_content"), {
   });
 
   //autosave
-  setInterval(function(){$('#save_form').submit()}, 12000);
+  setInterval(function(){$('#save_form').submit()}, 120000);
 })();
 </script>
 

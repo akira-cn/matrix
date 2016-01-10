@@ -1,8 +1,7 @@
 <%include inc/header.html%>
 <script>
 (function(){
-  var siderbar = document.getElementById('sidebar');
-  var lis = siderbar.getElementsByTagName('li');
+  var lis = document.querySelectorAll('#sidebar>ul>li');
   lis[1].className = 'active';
 })();
 </script>

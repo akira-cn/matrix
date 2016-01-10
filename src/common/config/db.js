@@ -4,7 +4,7 @@
  * @type {Object}
  */
 export default {
-  type: 'mysql',
+  /*type: 'mysql',
   host: '127.0.0.1',
   port: '3306',
   name: 'work_slide',
@@ -23,9 +23,9 @@ export default {
   adapter: {
     mysql: {},
     mongo: {}
-  }
+  }*/
 
-  /*type: 'sqlite',
+  type: 'sqlite',
   name: 'matrix',
   prefix: '',
   encoding: 'utf8',
@@ -45,5 +45,5 @@ export default {
     sqlite: {
       path: think.ROOT_PATH + '/sqlite'
     }
-  }*/
+  }
 };

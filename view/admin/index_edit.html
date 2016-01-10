@@ -65,7 +65,7 @@
                 </div>
               </div>
               <div class="form-actions">
-                <a href="/admin/slide/preview" target="_blank" id="preview" class="btn btn-primary">Preview</a>
+                <a href="/admin/slide/preview" target="matrix-preview" id="preview" class="btn btn-primary">Preview</a>
                 <button type="submit" class="btn btn-success">Save</button>
               </div>
             </form>
@@ -93,8 +93,58 @@
     }
   }
 
+  function getRange(el) {
+    var cuRange, tbRange, headRange, range, dupRange, ret = {};
+    if(el.setSelectionRange){
+      // standard
+      ret.begin = el.selectionStart;
+      ret.end = el.selectionEnd;
+      ret.result = el.value.substring(ret.begin, ret.end);
+    }else if(document.selection){
+      // ie
+      if(el.tagName.toLowerCase() === 'input'){
+          cuRange = document.selection.createRange();
+          tbRange = el.createTextRange();
+          tbRange.collapse(true);
+          tbRange.select();
+          headRange = document.selection.createRange();
+          headRange.setEndPoint('EndToEnd', cuRange);
+          ret.begin = headRange.text.length - cuRange.text.length;
+          ret.end = headRange.text.length;
+          ret.result = cuRange.text;
+          cuRange.select();
+      }else if(el.tagName.toLowerCase() === 'textarea'){
+          range = document.selection.createRange();
+          dupRange = range.duplicate();
+          dupRange.moveToElementText(el);
+          dupRange.setEndPoint('EndToEnd', range);
+          ret.begin = dupRange.text.length - range.text.length;
+          ret.end = dupRange.text.length;
+          ret.result = range.text;
+      }
+    }
+    el.focus();
+    return ret;
+  }
+
+  function getCurrentPage() {
+    var $textArea = $("textarea"), currentPosition = getRange( $textArea[0] ).begin;
+    return $textArea.val()
+          .slice(0, currentPosition)
+          .split(/[\r\n]/g)
+          .filter(function(text) { return /^\-{3,}$/.test(text) })
+          .length;
+  }
+
+  $(document).on("keydown", function(e) {
+    if( String.fromCharCode(e.keyCode) === 'M' && e.ctrlKey ) {
+      $("#preview")[0].click();
+      e.preventDefault();
+    }
+  });
+
   $('#preview').on('click', function(e){
-    e.target.href = '/admin/slide/preview?theme=' + $('#theme').val();
+    e.target.href = '/admin/slide/preview?theme=' + $('#theme').val()+'&_t='+ (new Date).getTime() +'#/'+getCurrentPage();
     return preview();
   });
 

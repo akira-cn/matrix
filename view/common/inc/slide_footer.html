@@ -163,7 +163,7 @@ function initReveal(){
     alert('没有要分享的内容！');
     return;
   }
-  var content = contentEl.innerHTML;
+  var content = decodeURIComponent(contentEl.innerHTML);
   var slides = content.split(/^---/img);
 
   for(var i = 0; i < slides.length; i++){

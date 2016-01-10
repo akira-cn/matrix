@@ -18,6 +18,10 @@
     margin: 0;
     display: none;
   }
+  #slide_content {
+    visibility: hidden;
+    height: 290px;
+  }
 </style>
 
 <div id="content">
@@ -59,10 +63,7 @@
                 </div>
               </div>
               <div class="control-group">
-                <label class="control-label">Content</label>
-                <div class="controls">
-                  <textarea id="slide_content" name="slide_content" required><%-slide_data.content||''%></textarea>
-                </div>
+                <textarea id="slide_content" name="slide_content" required><%-slide_data.content||''%></textarea>
               </div>
               <div class="form-actions">
                 <a href="/admin/slide/preview" target="_blank" id="preview" class="btn btn-primary">Preview</a>
@@ -78,9 +79,21 @@
 
 
 <!--end-main-container-part-->
-
+<link rel="stylesheet" href="/static/module/codemirror/lib/codemirror.css">
+<script src="/static/module/codemirror/lib/codemirror.js"></script>
+<script src="/static/module/codemirror/addon/edit/continuelist.js"></script>
+<script src="/static/module/codemirror/mode/css/css.js"></script>
+<script src="/static/module/codemirror/mode/xml/xml.js"></script>
+<script src="/static/module/codemirror/mode/markdown/markdown.js"></script>
+<script>
+CodeMirror.fromTextArea(document.getElementById("slide_content"), {
+  mode: 'markdown',
+  lineNumbers: true,
+  theme: "default",
+  extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
+});
+</script>
 <%include inc/footer.html%>
-
 <script>
 (function(){'use strict'
   $('#theme').val("<%=slide_data.theme || 'black'%>");

@@ -54,5 +54,5 @@
 </body>
 <script src="/static/module/reveal/js/reveal.js"></script>
 <script type="text/slide">
-  <%-slide.content || '# No slideshare.'%>
+  <%-encodeURIComponent(slide.content) || '# No slideshare.'%>
 </script>

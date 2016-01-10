@@ -85,6 +85,10 @@ export default class extends Base {
                 let moment = require('moment');
                 let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
+                if(fs.existsSync(src)){
+                  fs.unlink(src);
+                }
+                
                 resolve({
                   url: url,
                   size: dataBuffer.length,

@@ -5,7 +5,7 @@
   var contentEl = document.querySelector('[type="text/slide"]');
   var data = localStorage.getItem('slide_content');
   if(data){
-    contentEl.innerHTML = data;
+    contentEl.innerHTML = encodeURIComponent(data);
   }
 </script>
 <%}%>

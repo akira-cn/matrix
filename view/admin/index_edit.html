@@ -189,7 +189,7 @@ if(window.URL || window.webkitURL || window.FileReader){
   $('#theme').val("<%=slide_data.theme || 'black'%>");
 
   function preview(){
-    var content = $("#slide_content").val() || $("#title").val() || '# Untitled Slideshare';
+    var content = editor.getValue() || $("#slide_content").val() || $("#title").val() || '# Untitled Slideshare';
     if(content){
       localStorage.setItem('slide_content', content);
       return true;

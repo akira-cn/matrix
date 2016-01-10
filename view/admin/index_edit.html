@@ -106,81 +106,48 @@ var editor = CodeMirror.fromTextArea(document.getElementById("slide_content"), {
   theme: "default",
   extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
 });
-if(window.URL || window.webkitURL || window.FileReader){
+if(window.FormData){
   $('#file_uploader').show();
   $('#file_uploader').click(function(){
     $('#file').click();
-    //editor.replaceSelection('aaa');
   });
   $('#file').on('change', function(evt){
       var fileInput = evt.target;
       var file = fileInput.files[0];
-      var URL = window.URL || window.webkitURL;
+      var data = new FormData();
+      data.append('file', file);
 
-      if(0 && window.FileReader){
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function(e){
-          //console.log(this.result);
-          postImageData(this.result);
-        }
-      }else if(URL){
-        var blob = URL.createObjectURL(file);
-        getImageData(blob, function(data){
-          //console.log(data);
-          postImageData(data);
-        });
-      }
-  });
+      $('#file_uploader_progress>div').css('background-color', '');
+      $('#file_uploader_progress').show();
 
-  function postImageData(data){
-    data = data.replace(/^data:image\/\w+;base64,/, "");
-    var file = $('#file').val().split(/\/|\\/);
-
-    $('#file_uploader_progress>div').css('background-color', '');
-    $('#file_uploader_progress').show();
-    $.ajax({
-      type: 'POST',
-      url: '/admin/file/post',
-      data: {data:data, file:file[file.length-1]},
-      dataType: 'json', 
-      success: function(res){
-        if(!res.error && res.url){
-          $('#file_uploader_progress>div').css('background-color', '#9bdf14');
-          setTimeout(function(){
-            $('#file_uploader_progress').hide();
-          }, 100);
-          editor.replaceSelection('<img src="'+res.url+'"/>');
-        }else{
+      $.ajax({
+        url: '/admin/file/upload',
+        type: "POST",
+        data: data,
+        processData: false,  
+        contentType: false,   
+        success: function(res){
+          if(!res.error && res.url){
+            $('#file_uploader_progress>div').css('background-color', '#9bdf14');
+            setTimeout(function(){
+              $('#file_uploader_progress').hide();
+            }, 100);
+            editor.replaceSelection('<img src="'+res.url+'"/>');
+          }else{
+            $('#file_uploader_progress>div').css('background-color', '#ee5f5b');
+            $('#save_state').addClass('alert-error').removeClass('alert-info');
+            $('#save_state').html('upload image error.');
+            $('#save_state').show();          
+          }
+        },
+        error: function(res){
           $('#file_uploader_progress>div').css('background-color', '#ee5f5b');
           $('#save_state').addClass('alert-error').removeClass('alert-info');
           $('#save_state').html('upload image error.');
-          $('#save_state').show();          
+          $('#save_state').show();  
         }
-      },
-      error: function(res){
-        $('#file_uploader_progress>div').css('background-color', '#ee5f5b');
-        $('#save_state').addClass('alert-error').removeClass('alert-info');
-        $('#save_state').html('upload image error.');
-        $('#save_state').show();  
-      }
-    });
-  }
-
-  function getImageData(uri, callback){
-    var img = new Image();
-    img.src = uri;
-    img.onload = function(evt){
-      //console.log(img.width, img.height);
-      var w = img.width, h = img.height;
-      var _canvas = document.createElement('canvas');
-      _canvas.width = w;
-      _canvas.height = h;
-      _canvas.getContext('2d').drawImage(img, 0, 0, w, h, 0, 0, w, h);
-      var d = _canvas.toDataURL("image/png");
-      callback(d);
-    }
-  }
+      });
+  });
 }
 </script>
 <%include inc/footer.html%>

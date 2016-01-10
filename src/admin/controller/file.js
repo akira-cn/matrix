@@ -36,86 +36,6 @@ export default class extends Base {
 
     return this.redirect('/admin/index/images'); 
   }
-  //以base64形式上传的
-  async postAction(){
-    let {data, file} = this.post();
-    //console.log(data);
-    
-    let url = '/static/upload/' 
-      + md5(Math.random()+Date.now()+'').slice(0,16)
-      + '.png';
-
-    let src = think.RESOURCE_PATH + url;
-    let fs = require('fs');
-
-    let res = await new Promise((resolve, reject)=>{
-      let dataBuffer = new Buffer(data, 'base64');
-
-      fs.writeFile(src, dataBuffer, err => {
-        if(err){
-          reject(err);
-        }else{
-          let qiniuConf = think.config('qiniu');
-          if(!qiniuConf){
-            let moment = require('moment');
-            let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
-
-            resolve({
-              url: url,
-              size: dataBuffer.length,
-              filename: file,
-              uploadTime: datetime,
-              userId: this.userInfo.id
-            });
-          }else{
-            let qiniu = require('node-qiniu');
-            qiniu.config({
-              access_key: qiniuConf.access_key,
-              secret_key: qiniuConf.secret_key
-            });
-
-            let bucket = qiniu.bucket('h5jun');
-
-            let des = 'matrix' + url;
-
-            bucket.putFile(des, src, (err, reply) => {
-              if(!err){
-                let url = qiniuConf.domain +'/'+ des;
-                
-                let moment = require('moment');
-                let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
-
-                if(fs.existsSync(src)){
-                  fs.unlink(src);
-                }
-                
-                resolve({
-                  url: url,
-                  size: dataBuffer.length,
-                  filename: file,
-                  uploadTime: datetime,
-                  userId: this.userInfo.id              
-                });
-              }else{
-                reject(err);
-              }            
-            });
-          }
-        }
-      });
-    }).catch(err => {
-      this.json({error: err.message || 'upload error'});
-    }); 
- 
-    let model = this.model('images');
-    let insertId = await model.add(res);
-
-    if(insertId){
-      return this.json({error: '', url: res.url});
-    }else{
-      return this.json({error: 'upload error'});
-    }
-  }
 
   async uploadAction(){
     let file = this.file('file');
@@ -187,7 +107,7 @@ export default class extends Base {
     let insertId = await model.add(res);
 
     if(insertId){
-      return this.json({error: ''});
+      return this.json({error: '', url: res.url});
     }else{
       return this.json({error: 'upload error'});
     }

@@ -10,7 +10,9 @@
     <%}%>
 
     <!-- Code syntax highlighting -->
-    <link rel="stylesheet" href="/static/module/reveal/lib/css/zenburn.css">
+    <%HIGHLIGHT_MAP={white:'arduino-light',beige:'atelier-dune-light',blood:'kimbie.dark',sky:'github',league:'zenburn',moon:'solarized-dark',night:'hybrid',serif:'github-gist',simple:'default',solarized:'solarized-light',black:'tomorrow-night'};%>
+    <!--<link rel="stylesheet" href="/static/module/reveal/lib/css/zenburn.css">-->
+    <link rel="stylesheet" href="/static/module/reveal/plugin/highlight/theme/<%=http.get('cs')||HIGHLIGHT_MAP[http.get('theme')]||'default'%>.css">
 
     <!-- Printing and PDF exports -->
     <script>

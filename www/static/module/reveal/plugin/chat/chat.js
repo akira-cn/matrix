@@ -13,6 +13,9 @@
       container.appendChild(div);
 
       var duration = 10000 + Math.round(5000 * Math.random());
+
+      var bgmask = $.Color($('body').css('background-color'));
+
       function randColor(){return 128 + Math.round(128 * Math.random());};
 
       $(div).css({
@@ -23,7 +26,9 @@
         fontSize: '32px',
         opacity: 0.9,
         top: 50 + 24 * (0 | (18 * Math.random())) + 'px',
-        color: 'rgb(' + [randColor(),randColor(),randColor()] + ')'
+        color: 'rgb(' + [bgmask.red() ^ randColor(),
+            bgmask.green() ^ randColor(),
+            bgmask.blue() ^ randColor()] + ')'
       });
 
       var start = Date.now();

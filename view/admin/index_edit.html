@@ -103,6 +103,7 @@
 var editor = CodeMirror.fromTextArea(document.getElementById("slide_content"), {
   mode: 'markdown',
   lineNumbers: true,
+  lineWrapping: true,
   theme: "default",
   extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
 });
@@ -155,13 +156,17 @@ if(window.FormData){
 (function(){'use strict'
   $('#theme').val("<%=slide_data.theme || 'black'%>");
 
-  function preview(){
+  function updatePreview(){
     var content = editor.getValue() || $("#slide_content").val() || $("#title").val() || '# Untitled Slideshare';
     if(content){
       localStorage.setItem('slide_content', content);
       return true;
     }
   }
+
+  /*editor.on('change', function(){
+    updatePreview();
+  });*/
 
   function getCurrentPage() {
     var textPos = editor.getRange({line:0, ch:0}, editor.getCursor());
@@ -184,10 +189,11 @@ if(window.FormData){
 
   $('#preview').on('click', function(e){
     e.target.href = '/admin/slide/preview?theme=' + $('#theme').val()+'&_t='+ (new Date).getTime() +'#/'+getCurrentPage();
-    return preview();
+    return updatePreview();
   });
 
   $('#save_form').submit(function(){
+    updatePreview();
     $('#slide_content').val(editor.getValue() || 'Untitled Slide');
 
     $.ajax({

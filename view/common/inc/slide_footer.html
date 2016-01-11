@@ -14,17 +14,29 @@ function initReveal(){
       //{ src: '/static/js/jquery.min.js', condition: function(){ return !isMobile.any; } },
       //{ src: '/static/js/zepto.min.js', condition: function(){ return isMobile.any; } },
       { src: '/static/js/jquery.color.js' },
+      
       { src: '/static/module/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
       { src: '/static/module/reveal/plugin/highlight/highlight.js', condition: function() { return 1; }, callback: function() { hljs.initHighlightingOnLoad(); } },
       { src: '/static/module/reveal/plugin/zoom-js/zoom.js', async: true },
       { src: '/static/module/reveal/plugin/notes/notes.js', async: true },
-      { src: '/static/module/reveal/plugin/dragonbones/dragonBones.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
-      { src: '/static/module/reveal/plugin/dragonbones/createjs.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
-      { src: '/static/module/reveal/plugin/dragonbones/dragonBonesCreateJS.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
-      { src: '/static/module/reveal/plugin/dragonbones/dragonboneDatas.js', condition: function() { return !!document.querySelector('[data-dragonbone]'); }, async: true},
+      
       { src: '/static/module/reveal/plugin/chat/socket-io.js', condition: function(){ return !!document.querySelector('[data-chat]'); } },
       { src: '/static/module/reveal/plugin/chat/qrcode.js', condition: function(){ return !!document.querySelector('[data-chat]'); } },
       { src: '/static/module/reveal/plugin/chat/chat.js', condition: function(){ return !!document.querySelector('[data-chat]'); }, async: true },
+      
+      { src: '/static/module/reveal/plugin/js-sequence-diagrams/raphael.min.js'},
+      { src: '/static/module/reveal/plugin/js-sequence-diagrams/underscore.min.js'},
+      { src: '/static/module/reveal/plugin/js-sequence-diagrams/sequence-diagram.js', callback: function(){
+          $('.diagram').css({
+            display: 'inline-block',
+            padding: '1.2em'
+          });
+          $('.diagram').sequenceDiagram({theme: 'hand', 
+            fontSize: parseInt($('.diagram').css('fontSize') || 26),
+            color: $('.diagram').css('color')
+          });
+        }},
+
       { src: '/static/module/reveal/plugin/echarts/echarts.js', condition: function() { return !!document.querySelector('[data-echart]'); }, callback: function(){'use strict'
           // echarts 路径配置
           require.config({

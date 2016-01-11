@@ -70,7 +70,7 @@
                 </div>
               </div>
               <div class="control-group">
-                <textarea id="slide_content" name="slide_content" required><%-slide_data.content||''%></textarea>
+                <textarea id="slide_content" name="slide_content"><%-slide_data.content||''%></textarea>
                 <input id="file" accept="image/*;capture=camera" capture="camera" name="file" type="file"></input>
               </div>
               <div class="form-actions">
@@ -185,6 +185,8 @@ if(window.FormData){
   });
 
   $('#save_form').submit(function(){
+    $('#slide_content').val(editor.getValue() || 'Untitled Slide');
+
     $.ajax({
       type:'POST',
       url:'/admin/slide/save',

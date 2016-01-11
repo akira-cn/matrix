@@ -196,6 +196,9 @@ if(window.FormData){
       data:$(this).serialize(),
       success: function(res){
         if(!res.err){
+          if(res.id){
+            $('#sid').val(res.id);
+          }
           $('#save_state').removeClass('alert-error').addClass('alert-info');
           $('#save_state').html('Saved at ' + (new Date()).toLocaleString());
           $('#save_state').show();

@@ -33,16 +33,17 @@ export default class extends Base {
     //console.log(record);
 
     if(!sid){
-      let insertId = await model.add(record).catch(err=>this.json({err:err.message||'error'}));
+      sid = await model.add(record).catch(err=>this.json({err:err.message||'error'}));
+      
+      if(sid) return this.json({err:'', id: sid});
     }else{
       let affectedRows = await model
         .where({id: sid})
         .update(record)
         .catch(err=>this.json({err:err.message||'error'}));
-    }
 
-    //return this.redirect('/admin');
-    return this.json({err:''});
+      if(affectedRows) return this.json({err:'', id: sid});
+    }
   }
   
   async deleteAction(){

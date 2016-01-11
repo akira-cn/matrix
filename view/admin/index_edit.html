@@ -173,8 +173,11 @@ if(window.FormData){
   }
 
   $(document).on("keydown", function(e) {
-    if( String.fromCharCode(e.keyCode) === 'M' && e.ctrlKey ) {
+    if( String.fromCharCode(e.keyCode) === 'M' && (e.ctrlKey || e.metaKey) ) {
       $("#preview")[0].click();
+      e.preventDefault();
+    }if ( String.fromCharCode(e.keyCode) === 'S' && (e.ctrlKey || e.metaKey)){
+      $('#save_form').submit();
       e.preventDefault();
     }
   });

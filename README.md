@@ -1,6 +1,6 @@
 # Matrix
 
-Open source slideshare lab for user to create slideshares by reveal.js. 
+Open source slides lab for user to create slideshares by reveal.js. 
 
 Matrix is created by [ThinkJS](http://www.thinkjs.org)
 

@@ -171,7 +171,7 @@ function initReveal(){
 }
 
 (function(){
-  var contentEl = document.querySelector('[type="text/slide"]');
+  var contentEl = document.querySelector('[type="text/x-slide"]');
   if(!contentEl){
     alert('没有要分享的内容！');
     return;
@@ -220,6 +220,18 @@ function initReveal(){
     parsed += '</section>';
 
     slides[i] = parsed;
+  }
+
+  if(/\$\$[\s\S]*?\$\$/m.test(content) 
+    || /\\\[[\s\S]*?\\\]/m.test(content
+    || /\\\([\s\S]*?\\\)/m.test(content))){
+    //Load mathjax
+    Reveal.addEventListener( 'ready', function(){
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src  = '/static/module/mathjax/MathJax.js?config=TeX-AMS_HTML-full';
+      document.getElementsByTagName('head')[0].appendChild(script);    
+    });
   }
 
   var container = document.getElementById('main');

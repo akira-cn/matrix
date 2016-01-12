@@ -16,7 +16,7 @@ function initReveal(){
       { src: '/static/js/jquery.color.js' },
       
       { src: '/static/module/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: '/static/module/reveal/plugin/highlight/highlight.js', condition: function() { return 1; }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: '/static/module/reveal/plugin/highlight/highlight.js', condition: function() { return !!document.querySelector('pre code'); }, callback: function() { hljs.initHighlightingOnLoad(); } },
       { src: '/static/module/reveal/plugin/zoom-js/zoom.js', async: true },
       { src: '/static/module/reveal/plugin/notes/notes.js', async: true },
       
@@ -24,9 +24,9 @@ function initReveal(){
       { src: '/static/module/reveal/plugin/chat/qrcode.js', condition: function(){ return !!document.querySelector('[data-chat]'); } },
       { src: '/static/module/reveal/plugin/chat/chat.js', condition: function(){ return !!document.querySelector('[data-chat]'); }, async: true },
       
-      { src: '/static/module/reveal/plugin/js-sequence-diagrams/raphael.min.js'},
-      { src: '/static/module/reveal/plugin/js-sequence-diagrams/underscore.min.js'},
-      { src: '/static/module/reveal/plugin/js-sequence-diagrams/sequence-diagram.js', callback: function(){
+      { src: '/static/module/reveal/plugin/js-sequence-diagrams/raphael.min.js', condition: function(){ return !!document.querySelector('.diagram') } },
+      { src: '/static/module/reveal/plugin/js-sequence-diagrams/underscore.min.js', condition: function(){ return !!document.querySelector('.diagram') } },
+      { src: '/static/module/reveal/plugin/js-sequence-diagrams/sequence-diagram.js', condition: function(){ return !!document.querySelector('.diagram') }, callback: function(){
           $('.diagram').css({
             display: 'inline-block',
             padding: '1.2em'
@@ -225,7 +225,9 @@ function initReveal(){
   var container = document.getElementById('main');
   container.innerHTML = slides.join('');
   
-  initReveal();
+  setTimeout(function(){
+    initReveal();
+  })
 })();
 
 </script>

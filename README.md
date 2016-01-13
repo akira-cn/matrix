@@ -10,6 +10,8 @@
 
 ## Quick start
 
+[DEMO](http://matrix.h5jun.com/slide/show?id=109 )
+
 ### installation
 
 ```

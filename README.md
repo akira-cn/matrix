@@ -15,10 +15,12 @@
 ### installation
 
 ```
+git clone https://github.com/akira-cn/matrix.git
+cd matrix
 npm install
 ```
 
-### start service
+### start server
 
 ```
 npm start

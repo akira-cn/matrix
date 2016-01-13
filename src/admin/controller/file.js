@@ -38,84 +38,29 @@ export default class extends Base {
   }
 
   async uploadAction(){
+    let upload = this.service('uploader').getInstance();
+
     let file = this.file('file');
-    let fs = require( 'fs' );
     let src = file.path;
-
-    let url = '/static/upload/' 
-      + md5(Math.random()+Date.now()+'').slice(0,16)
-      + require('path').parse(src).ext; 
-
     let moment = require('moment');
 
     let res = await new Promise(async (resolve) => {
       let qcdn = think.config('qcdn');
       let qiniuConf = think.config('qiniu');
-      if(qcdn){
-        let cdn = require('qcdn');
-        let url = await cdn(src);
-        
-        let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-        resolve({
-          url: url,
-          size: file.size,
-          filename: file.originalFilename,
-          uploadTime: datetime,
-          userId: this.userInfo.id     
-        });
-      }else if(qiniuConf){
-        let qiniu = require('node-qiniu');
-        qiniu.config({
-          access_key: qiniuConf.access_key,
-          secret_key: qiniuConf.secret_key
-        });
+      let url = await upload(src);
+      
+      let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-        let bucket = qiniu.bucket('h5jun');
-
-        let des = 'matrix' + url;
-
-        bucket.putFile(des, src, (err, reply) => {
-          if(!err){
-            let url = qiniuConf.domain +'/'+ des;
-            
-            let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
-
-            resolve({
-              url: url,
-              size: file.size,
-              filename: file.originalFilename,
-              uploadTime: datetime,
-              userId: this.userInfo.id              
-            });
-          }else{
-            reject(err);
-          }
-        });        
-      }else{
-        let des = think.RESOURCE_PATH + url;
-        
-        let readStream = fs.createReadStream(src);
-        let writeStream = fs.createWriteStream(des);
-
-        readStream.pipe(writeStream);
-        readStream.on('end', () => {
-          writeStream.end();
-
-          let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
-          
-          resolve({
-            url: url,
-            size: file.size,
-            filename: file.originalFilename,
-            uploadTime: datetime,
-            userId: this.userInfo.id
-          });
-        });
-      }
+      resolve({
+        url: url,
+        size: file.size,
+        filename: file.originalFilename,
+        uploadTime: datetime,
+        userId: this.userInfo.id     
+      });
     });
 
-    //console.log(res);
     let model = this.model('images');
     let insertId = await model.add(res);
 

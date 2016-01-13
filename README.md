@@ -1,8 +1,6 @@
 # Matrix
 
-Open source slides lab for user to create slideshares by reveal.js. 
-
-Matrix is created by [ThinkJS](http://www.thinkjs.org)
+[Reveal.js](https://github.com/hakimel/reveal.js) based slides lab for users to create and share slides. 
 
 ![portal](https://dn-h5jun.qbox.me/matrix-portal.png)
 
@@ -10,29 +8,32 @@ Matrix is created by [ThinkJS](http://www.thinkjs.org)
 
 ![admin2](https://dn-h5jun.qbox.me/matrix-admin2.png)
 
-## install dependencies
+## Quick start
+
+### installation
 
 ```
 npm install
 ```
 
-## start server
+### start service
 
 ```
 npm start
 ```
 
-## visit site
+### visit website
 
-http://127.0.0.1:9360
+`http://127.0.0.1:9360`
 
-## visit admin
+### administrator panel
 
-http://127.0.0.1:9360/admin
+`http://127.0.0.1:9360/admin`
 
-user: admin, password: 123456
+- login user: `admin`
+- default password: `123456`
 
-## usage
+## demo
 
 ```markdown
 ## Diagram
@@ -137,10 +138,17 @@ option = {
 ## More Features
 ```
 
-## deploy with pm2
+## Thanks
 
-use pm2 to deploy app on production envrioment.
+[ThinkJS](http://www.thinkjs.org)
 
-```
-pm2 startOrReload pm2.json
-```
+[Reveal.js](https://github.com/hakimel/reveal.js)
+[CodeMirror](http://codemirror.net/)
+[Mathjax](https://www.mathjax.org/)
+[PrismJS](https://github.com/PrismJS/prism)
+
+[Method-Draw](https://github.com/akira-cn/Method-Draw)
+[js-sequence-diagrams](https://github.com/bramp/js-sequence-diagrams)
+[ECharts](http://echarts.baidu.com/)
+
+[Theme Designer](http://themedesigner.in/)

@@ -1,0 +1,299 @@
+/**
+ * dark theme for reveal.js.
+ *
+ * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+html, body {
+    overflow-y: auto;
+}
+body {
+    background: #111111;
+    background-color: #111111;
+    background-repeat: no-repeat;
+    transition: background 0.5s ease-in!important;
+}
+
+.reveal {
+    font-family: "Segoe UI Light", "Microsoft Jhenghei", Simhei, sans-serif;
+    font-size: 30px;
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    color: #eeeeee; }
+
+::selection {
+    color: white;
+    background: #9BC53D;
+    text-shadow: none; }
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+    margin: 0 0 0.5em 0;
+    color: #eeeeee;
+    line-height: 0.9em;
+    letter-spacing: -0.03em;
+    text-transform: none;
+    text-shadow: none; 
+}
+
+.reveal h1 {
+    font-size: 3em;
+    text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); 
+}
+.reveal h1, .reveal h2, .reveal h3 {
+    margin-bottom: 1em;
+}
+.reveal p,
+.reveal ul li {
+    margin-bottom: 0.5em;
+}
+
+/*********************************************
+ * LINKS
+ *********************************************/
+.reveal a:not(.image) {
+    color: #9BC53D;
+    text-decoration: none;
+    -webkit-transition: color .15s ease;
+    -moz-transition: color .15s ease;
+    -ms-transition: color .15s ease;
+    -o-transition: color .15s ease;
+    transition: color .15s ease; 
+}
+
+.reveal a:not(.image):hover {
+    color: #f3d7ac;
+    text-shadow: none;
+    border: none; 
+}
+
+.reveal .roll span:after {
+    color: #fff;
+    background: #9BC53D; 
+}
+
+/*********************************************
+ * IMAGES
+ *********************************************/
+.reveal section img {
+    margin: 15px 0px;
+    border: none;
+    background: none;
+    max-height: 640px;
+}
+
+/*********************************************
+ * NAVIGATION CONTROLS
+ *********************************************/
+.reveal .controls div.navigate-left,
+.reveal .controls div.navigate-left.enabled {
+    border-right-color: #9BC53D; }
+
+.reveal .controls div.navigate-right,
+.reveal .controls div.navigate-right.enabled {
+    border-left-color: #9BC53D; }
+
+.reveal .controls div.navigate-up,
+.reveal .controls div.navigate-up.enabled {
+    border-bottom-color: #9BC53D; }
+
+.reveal .controls div.navigate-down,
+.reveal .controls div.navigate-down.enabled {
+    border-top-color: #9BC53D; }
+
+.reveal .controls div.navigate-left.enabled:hover {
+    border-right-color: #f3d7ac; }
+
+.reveal .controls div.navigate-right.enabled:hover {
+    border-left-color: #f3d7ac; }
+
+.reveal .controls div.navigate-up.enabled:hover {
+    border-bottom-color: #f3d7ac; }
+
+.reveal .controls div.navigate-down.enabled:hover {
+    border-top-color: #f3d7ac; }
+
+/*********************************************
+ * PROGRESS BAR
+ *********************************************/
+.reveal .progress {
+    background: rgba(0, 0, 0, 0.2); }
+
+.reveal .progress span {
+    background: #9BC53D;
+    -webkit-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+    -moz-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+    -ms-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+    -o-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+    transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+
+/*********************************************
+ * tags
+ *********************************************/
+.tag-microsharing {
+    position: relative;
+}
+.tag-microsharing:before {
+    content: '';
+    width: 0.15em;
+    height: 0.15em;
+    border-radius: 100%;
+    background: #111;
+    display: block;
+    position: absolute;
+    top: -0.2em;
+    right: 0.28em;
+    z-index: 1;
+}
+.tag-microsharing:after {
+    content: '微分享';
+    display: block;
+    position: absolute;
+    top: -2em;
+    right: -3em;
+    font-size: 50%;
+    color: #fff;
+    width: 4em;
+    padding-left: 0.5em;
+    text-align: center;
+    background: #999;
+    color: #000;
+    -webkit-transform: rotate(-30deg);
+    -moz-transform: rotate(-30deg);
+    transform: rotate(-30deg);
+}
+
+/*********************************************
+ * states
+ *********************************************/
+.blue body {
+    background-color: #09c;
+}
+.purple body {
+    background-color: #93c;
+}
+.green body {
+    background-color: #690;
+}
+.orange body {
+    background-color: #f80;
+}
+.red body {
+    background-color: #f44;
+}
+.white body {
+    background-color: #fff;
+}
+.light body {
+    background-color: #eaeaea;
+}
+.gray body {
+    background-color: #ccc;
+}
+.dark body {
+    background-color: #666;
+}
+.white .reveal, .light .reveal,
+.white .reveal h1,
+.white .reveal h2,
+.white .reveal h3,
+.white .reveal a,
+.white .reveal a:hover,
+.light .reveal h1,
+.light .reveal h2,
+.light .reveal h3,
+.light .reveal a,
+.light .reveal a:hover {
+    color: #333!important;
+}
+
+/*********************************************
+ * background image
+ *********************************************/
+[class^="bg-"] body, [class*=" bg-"] body {
+    background-repeat: no-repeat!important;
+    background-size: cover!important;
+    background-position: center center!important;
+}
+
+[class^="bg-"] .present {
+    text-align: left;
+}
+
+[class^="bg-"] .present h1,
+[class^="bg-"] .present h2, 
+[class^="bg-"] .present h3, 
+[class^="bg-"] .present h4, 
+[class^="bg-"] .present li,
+[class^="bg-"] .present p {
+    text-shadow: 1px 1px 1px #000, 0 0 1em #000;
+}
+
+.reveal li ul {
+    margin-top: 0.5em;
+    margin-bottom: 0.8em;
+    font-size: 0.8em;
+}
+
+/*********************************************
+ * code
+ *********************************************/
+.reveal pre {
+    font-size: 1em;
+    line-height: 1.25;
+    margin: 1em auto;
+    position: relative;
+}
+.reveal pre code {
+    padding: 0;
+}
+.reveal .run-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #7BB800;
+    cursor: pointer;
+    border-radius: 0 0 0 0.3em;
+}
+
+.reveal em {
+    font-style: normal;
+    color: #9c0;
+}
+.reveal blockquote {
+    text-align: left;
+    width: 80%;
+    padding: 0.5em;
+}
+.reveal .masked {
+    background: #000;
+    background: rgba(0,0,0,0.5);
+}
+.reveal pre .line {
+    overflow: visible;
+    border-left: 2em solid #000;
+    position: relative;
+}
+.reveal pre .line:after {
+    display: block;
+    content: '1.\00000a2.\00000a3.\00000a4.\00000a5.\00000a6.\00000a7.\00000a8.\00000a9.\00000a10.\00000a11.\00000a12.\00000a13.\00000a14.\00000a15.\00000a16.\00000a17.\00000a18.\00000a19.\00000a20.\00000a21.';
+    width: 1.5em;
+    position: absolute;
+    top: 0.5em;
+    bottom: 0.5em;
+    left: -1.6em;
+    text-align: right;
+    overflow: hidden;
+    color: #666;
+    z-index: 1;
+}

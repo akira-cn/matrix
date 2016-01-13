@@ -11,12 +11,44 @@ function initReveal(){
     // Optional reveal.js plugins
     dependencies: [
       { src: '/static/js/jquery.min.js' },
-      //{ src: '/static/js/jquery.min.js', condition: function(){ return !isMobile.any; } },
-      //{ src: '/static/js/zepto.min.js', condition: function(){ return isMobile.any; } },
+
       { src: '/static/js/jquery.color.js' },
       
       { src: '/static/module/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: '/static/module/reveal/plugin/highlight/highlight.js', condition: function() { return !!document.querySelector('pre code'); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+      { src: '/static/module/reveal/plugin/prism/prism.js', condition: function() { return !!document.querySelector('pre code'); }, callback: function() { 
+        var theme = "<%=http.get('theme') || slide.theme || 'default'%>";
+        var hightLightTheme;
+
+        var hlThemeMap = {
+          black: 'twilight',
+          blood: 'twilight',
+          league: 'okaidia',
+          moon: 'twilight',
+          night: 'tomorrow',
+          simple: 'coy',
+          white: 'coy'
+        }; 
+
+        hightLightTheme = hlThemeMap[theme];
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        if(!hightLightTheme){
+          link.href = '/static/module/reveal/plugin/prism/themes/prism.css';
+        }else{
+          link.href = '/static/module/reveal/plugin/prism/themes/prism-' 
+            + hightLightTheme + '.css';
+        }
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+        var codes = [].slice.call(document.querySelectorAll('pre code'));
+        codes.forEach(function(item){
+            item.classList.add('language-' + item.classList[0]);
+        });
+        Prism.highlightAll();
+      } },
+
       { src: '/static/module/reveal/plugin/zoom-js/zoom.js', async: true },
       { src: '/static/module/reveal/plugin/notes/notes.js', async: true },
       
@@ -239,7 +271,7 @@ function initReveal(){
   
   setTimeout(function(){
     initReveal();
-  })
+  });
 })();
 
 </script>

@@ -8,10 +8,6 @@
     <%if(http.get('theme') || slide.theme){%>
     <link rel="stylesheet" href="/static/module/reveal/css/theme/<%=http.get('theme') || slide.theme%>.css" id="theme">
     <%}%>
-
-    <!-- Code syntax highlighting -->
-    <%HIGHLIGHT_MAP={white:'arduino-light',beige:'atelier-dune-light',blood:'kimbie.dark',sky:'github',league:'zenburn',moon:'sunburst',night:'hybrid',serif:'github-gist',simple:'default',solarized:'solarized-light',black:'tomorrow-night'};%>
-    <link rel="stylesheet" href="/static/module/reveal/plugin/highlight/theme/<%=http.get('cs')||HIGHLIGHT_MAP[http.get('theme') || slide.theme]||'default'%>.css">
     
     <!-- Printing and PDF exports -->
     <script>

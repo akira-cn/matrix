@@ -45,11 +45,26 @@ export default class extends Base {
     let url = '/static/upload/' 
       + md5(Math.random()+Date.now()+'').slice(0,16)
       + require('path').parse(src).ext; 
-    //+ file.originalFilename;
 
-    let res = await new Promise((resolve) => {
+    let moment = require('moment');
+
+    let res = await new Promise(async (resolve) => {
+      let qcdn = think.config('qcdn');
       let qiniuConf = think.config('qiniu');
-      if(qiniuConf){
+      if(qcdn){
+        let cdn = require('qcdn');
+        let url = await cdn(src);
+        
+        let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+        resolve({
+          url: url,
+          size: file.size,
+          filename: file.originalFilename,
+          uploadTime: datetime,
+          userId: this.userInfo.id     
+        });
+      }else if(qiniuConf){
         let qiniu = require('node-qiniu');
         qiniu.config({
           access_key: qiniuConf.access_key,
@@ -64,7 +79,6 @@ export default class extends Base {
           if(!err){
             let url = qiniuConf.domain +'/'+ des;
             
-            let moment = require('moment');
             let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
 
             resolve({
@@ -88,7 +102,6 @@ export default class extends Base {
         readStream.on('end', () => {
           writeStream.end();
 
-          let moment = require('moment');
           let datetime = moment().format('YYYY-MM-DD HH:mm:ss');
           
           resolve({

@@ -115,6 +115,8 @@ if(window.FormData){
   $('#file').on('change', function(evt){
       var fileInput = evt.target;
       var file = fileInput.files[0];
+      if(!file) return false;
+      
       var data = new FormData();
       data.append('file', file);
 

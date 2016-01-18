@@ -1,6 +1,6 @@
 # Matrix
 
-Allow you to create your own website to share your slides to all users.
+Allow you to create your own website to share your html5 slides to all users.
 
 Based on [reveal.js](https://github.com/hakimel/reveal.js) (The HTML Presentation Framework).
 

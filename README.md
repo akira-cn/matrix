@@ -1,6 +1,8 @@
 # Matrix
 
-[Reveal.js](https://github.com/hakimel/reveal.js) based slides lab for users to create and share slides. 
+Allow you to create your own website to share your slides to all users.
+
+Based on [reveal.js](https://github.com/hakimel/reveal.js) (The HTML Presentation Framework).
 
 ![portal](https://dn-h5jun.qbox.me/matrix-portal.png)
 

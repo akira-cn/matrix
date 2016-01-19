@@ -289,7 +289,10 @@
 					].join( '&' );
 
 					var hash = '#/' + data.state.indexh + '/' + data.state.indexv;
-					var joint = data.url.indexOf('?') >= 0 : '&' : '?';
+					var joint = '?';
+					if(data.url.indexOf('?')){
+						joint = '&';
+					}
 
 					var currentURL = data.url + joint + params + '&postMessageEvents=true' + hash;
 					var upcomingURL = data.url + joint + params + '&controls=false' + hash;

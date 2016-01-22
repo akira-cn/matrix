@@ -14,5 +14,3 @@ var instance = new thinkjs({
 instance.compile({retainLines: true, log: true});
 
 instance.run();
-
-console.log(think.RUNTIME_PATH);

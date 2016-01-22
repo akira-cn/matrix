@@ -5,6 +5,7 @@ var rootPath = path.dirname(__dirname);
 
 var instance = new thinkjs({
   APP_PATH: rootPath + '/app',
+  RUNTIME_PATH: rootPath + path.sep + 'runtime',
   ROOT_PATH: rootPath,
   RESOURCE_PATH: __dirname,
   env: 'development'
@@ -13,3 +14,5 @@ var instance = new thinkjs({
 instance.compile({retainLines: true, log: true});
 
 instance.run();
+
+console.log(think.RUNTIME_PATH);

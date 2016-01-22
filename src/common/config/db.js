@@ -26,7 +26,7 @@ export default {
   }*/
 
   type: 'sqlite',
-  name: 'matrix',
+  database: 'matrix',
   prefix: '',
   encoding: 'utf8',
   nums_per_page: 10,

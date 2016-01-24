@@ -273,8 +273,8 @@ function initReveal(){
   }
 
   if(/\$\$[\s\S]*?\$\$/m.test(content) 
-    || /\\\[[\s\S]*?\\\]/m.test(content
-    || /\\\([\s\S]*?\\\)/m.test(content))){
+    || /\\\[[\s\S]*?\\\]/m.test(content)
+    || /\\\([\s\S]*?\\\)/m.test(content)){
     //Load mathjax
     Reveal.addEventListener( 'ready', function(){
       loadScript('/static/module/mathjax/MathJax.js?config=TeX-AMS_HTML-full', function(){

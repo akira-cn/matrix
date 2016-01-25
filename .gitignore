@@ -44,5 +44,5 @@ node_modules/
 .idea
 
 # output
-output/
-output.tar.gz
+/output/
+/output.tar.gz

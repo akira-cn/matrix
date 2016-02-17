@@ -1,10 +1,9 @@
 'use strict';
-
+var route = []
 if(think.config('uuap')){
-  export default [
+  route = [
     ["admin/user/logout", "admin/uuap/logout"],
     ["admin/user", "admin/uuap/login"],
   ];
-}else{
-  export default [];
 }
+export default route;

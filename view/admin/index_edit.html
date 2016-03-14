@@ -76,8 +76,9 @@
               <div class="form-actions">
                 <div class="btn-wrapper">
                   <button id="file_uploader" type="button" class="btn btn-warning">Insert Image</button>
-                  <a href="/admin/slide/preview" target="matrix-preview" id="preview" class="btn btn-primary">Preview</a>
+                  <a href="javascript:;" target="matrix-preview" id="preview" class="btn btn-primary">Preview</a>
                   <button type="submit" class="btn btn-success">Save</button>
+                  <a href="javascript:;" target="matrix-preview" id="print" class="btn btn-info">Print</a>
                   <div id="file_uploader_progress" class="progress progress-mini active progress-striped">
                     <div style="width: 100%;" class="bar"></div>
                   </div>
@@ -190,14 +191,22 @@ if(window.FormData){
     if( String.fromCharCode(e.keyCode) === 'M' && (e.ctrlKey || e.metaKey) ) {
       $("#preview")[0].click();
       e.preventDefault();
-    }if ( String.fromCharCode(e.keyCode) === 'S' && (e.ctrlKey || e.metaKey)){
+    }else if ( String.fromCharCode(e.keyCode) === 'S' && (e.ctrlKey || e.metaKey)){
       $('#save_form').submit();
+      e.preventDefault();
+    }else if ( String.fromCharCode(e.keyCode) === 'P' && (e.ctrlKey || e.metaKey)){
+      $("#print")[0].click();
       e.preventDefault();
     }
   });
 
   $('#preview').on('click', function(e){
     e.target.href = '/admin/slide/preview?theme=' + $('#theme').val()+'&_t='+ (new Date).getTime() +'#/'+getCurrentPage();
+    return updatePreview();
+  });
+
+  $('#print').on('click', function(e){
+    e.target.href = '/admin/slide/preview?theme=print-pdf&_t='+ (new Date).getTime() +'#/'+getCurrentPage();
     return updatePreview();
   });
 

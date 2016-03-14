@@ -5,7 +5,21 @@
   <title><%=slide.title||'Untitled Slide'%></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
     <link rel="stylesheet" href="/static/module/reveal/css/reveal.css">
-    <%if(http.get('theme') || slide.theme){%>
+    <%if(http.get('theme') === 'print-pdf'){%>
+      <link rel="stylesheet" href="/static/module/reveal/css/theme/simple.css" id="theme">
+      <style type="text/css" media="print">  
+        .print-pdf *{box-shadow:none!important;}
+        .print-pdf *:before, .print-pdf *:after{display:none!important;}  
+      </style> 
+      <style type="text/css">
+        .noprint{display:none;}
+      </style>
+      <style type="text/css" media="screen">
+        .reveal{opacity:0;}
+        .print-pdf .noprint{position:absolute;display:inline-block;width:500px;left:50%;top:35%;margin-left:-250px;}
+        body.print-pdf{overflow:hidden;}
+      </style>     
+    <%}else if(http.get('theme') || slide.theme){%>
     <link rel="stylesheet" href="/static/module/reveal/css/theme/<%=http.get('theme') || slide.theme%>.css" id="theme">
     <%}%>
     
@@ -44,6 +58,7 @@
     </style>
 </head>
 <body>
+  <div class="noprint">选择浏览器“打印预览”预览效果</div>
   <div class="reveal">
     <div class="slides" id="main">
     </div>

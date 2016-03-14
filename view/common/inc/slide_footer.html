@@ -1,4 +1,7 @@
 <script type="text/javascript">
+function isPDF(){
+  return location.search.indexOf('print-pdf') >= 0;
+}
 function initReveal(){
   Reveal.initialize({
     controls: true,
@@ -29,6 +32,7 @@ function initReveal(){
           moon: 'twilight',
           night: 'tomorrow',
           simple: 'coy',
+          'print-pdf' : 'coy',
           white: 'coy'
         }; 
 
@@ -239,7 +243,7 @@ function initReveal(){
             continue;
           } else if(tag.indexOf(':') >= 0){
             tag = tag.replace(':', '="') + '"';
-            if(tag.indexOf('stage') == 0){
+            if(!isPDF() && tag.indexOf('stage') == 0){
               tag = tag.replace(/^stage/, 'background');
             }
             dataTag.push('data-' + tag);

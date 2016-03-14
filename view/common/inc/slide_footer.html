@@ -180,7 +180,17 @@ function initReveal(){
           } 
           
           Reveal.addEventListener('ready', showcharts); 
-          Reveal.addEventListener('slidechanged', showcharts);     
+          Reveal.addEventListener('slidechanged', showcharts);  
+          
+          if(isPDF()){
+            Reveal.addEventListener('ready', function(event){
+              //{currentSlide: 
+              var slides = document.querySelectorAll('.slide section');
+              for(var i = 0; i < slides.length; i++){
+                showcharts({currentSlide: slides[i]});
+              }
+            }); 
+          }   
       } }, 
     ]
   });

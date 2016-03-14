@@ -58,7 +58,9 @@
     </style>
 </head>
 <body>
-  <div class="noprint">选择浏览器“打印预览”预览效果</div>
+  <%if(http.get('theme') === 'print-pdf'){%>
+    <div class="noprint">选择浏览器“打印预览”预览效果</div>
+  <%}%>
   <div class="reveal">
     <div class="slides" id="main">
     </div>

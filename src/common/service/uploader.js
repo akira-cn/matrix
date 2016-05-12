@@ -13,7 +13,7 @@ export default {
    */
   getInstance(){
     let conf = think.config('uploader');
-    let instance = require(__dirname + '/uploaders/' + conf.type).bind(null, conf[conf.type]);
+    let instance = require(__dirname + '/uploaders/' + conf.type).default.bind(null, conf[conf.type]);
 
     return instance;
   }
